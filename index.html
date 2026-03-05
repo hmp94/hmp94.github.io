@@ -67,11 +67,30 @@
     @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-40px, -60px); } }
 
     .container {
-      max-width: 860px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 3rem;
       position: relative;
       z-index: 1;
+    }
+
+    /* alternating section layout */
+    .section-inner {
+      max-width: 620px;
+      width: 100%;
+    }
+    section.align-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    section.align-right .container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    section.align-right .section-header {
+      flex-direction: row-reverse;
     }
 
     nav {
@@ -425,6 +444,7 @@
 <!-- MOTIVATION -->
 <section id="motivation">
   <div class="container">
+    <div class="section-inner">
     <div class="section-header reveal">
       <h2 class="section-title">Motivation &amp; Goal</h2>
       <div class="section-line"></div>
@@ -446,14 +466,16 @@
       </blockquote>
 
     </div>
+    </div>
   </div>
 </section>
 
 <div class="section-divider"></div>
 
 <!-- EDUCATION -->
-<section id="education">
+<section id="education" class="align-right">
   <div class="container">
+    <div class="section-inner">
     <div class="section-header reveal">
       <h2 class="section-title">Education</h2>
       <div class="section-line"></div>
@@ -474,6 +496,7 @@
       </div>
 
     </div>
+    </div>
   </div>
 </section>
 
@@ -482,6 +505,7 @@
 <!-- RESEARCH -->
 <section id="research">
   <div class="container">
+    <div class="section-inner">
     <div class="section-header reveal">
       <h2 class="section-title">Research Experience</h2>
       <div class="section-line"></div>
@@ -570,15 +594,17 @@
         </div>
       </div>
 
-    </div>
+    </div><!-- end research-list -->
+    </div><!-- end section-inner -->
   </div>
 </section>
 
 <div class="section-divider"></div>
 
 <!-- PERSONAL -->
-<section id="personal">
+<section id="personal" class="align-right">
   <div class="container">
+    <div class="section-inner">
     <div class="section-header reveal">
       <h2 class="section-title">Personal</h2>
       <div class="section-line"></div>
@@ -610,9 +636,9 @@
       </div>
 
     </div>
+    </div>
   </div>
 </section>
-
 <footer>
   <div class="container">
     <p>Built with intention · &copy; 2026 Minh Phan</p>
