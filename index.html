@@ -37,9 +37,7 @@
       background: #2C3930;
       transition: background 0.4s ease;
     }
-    nav.scrolled {
-      background: #222e27;
-    }
+    nav.scrolled { background: #222e27; }
     nav .nav-inner {
       max-width: 1100px;
       margin: 0 auto;
@@ -74,15 +72,12 @@
       position: relative;
     }
     .nav-links a:hover { color: #FFFFFF; }
-    .nav-links a.active {
-      color: #FFFFFF;
-    }
+    .nav-links a.active { color: #FFFFFF; }
     .nav-links a.active::after {
       content: '';
       position: absolute;
       bottom: -4px;
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       height: 2px;
       background: #FFFFFF;
     }
@@ -94,12 +89,8 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-    .page.active {
-      display: block;
-    }
-    .page.visible {
-      opacity: 1;
-    }
+    .page.active { display: block; }
+    .page.visible { opacity: 1; }
 
     /* HERO */
     #hero {
@@ -116,10 +107,8 @@
     #hero::before {
       content: '';
       position: absolute;
-      top: 10%;
-      right: 8%;
-      width: 280px;
-      height: 280px;
+      top: 10%; right: 8%;
+      width: 280px; height: 280px;
       border: 1px solid rgba(44, 57, 48, 0.06);
       transform: rotate(15deg);
       pointer-events: none;
@@ -127,10 +116,8 @@
     #hero::after {
       content: '';
       position: absolute;
-      bottom: 15%;
-      left: 6%;
-      width: 180px;
-      height: 180px;
+      bottom: 15%; left: 6%;
+      width: 180px; height: 180px;
       border: 1px solid rgba(44, 57, 48, 0.05);
       border-radius: 50%;
       pointer-events: none;
@@ -147,8 +134,7 @@
     }
     .hero-tagline {
       position: absolute;
-      bottom: 2.5rem;
-      right: 3rem;
+      bottom: 2.5rem; right: 3rem;
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--text-dim);
@@ -160,8 +146,7 @@
     }
     .hero-nav-hint {
       position: absolute;
-      bottom: 2.5rem;
-      left: 3rem;
+      bottom: 2.5rem; left: 3rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -178,9 +163,7 @@
       cursor: pointer;
       transition: color 0.2s;
     }
-    .hero-nav-hint a:hover {
-      color: var(--theme);
-    }
+    .hero-nav-hint a:hover { color: var(--theme); }
 
     @keyframes heroIn {
       from { opacity: 0; transform: translateY(30px); }
@@ -191,12 +174,8 @@
       to   { opacity: 1; }
     }
 
-    /* PAGE CONTENT LAYOUT */
-    .page-content {
-      padding-top: 5rem;
-    }
-
-    /* SECTIONS */
+    /* PAGE CONTENT */
+    .page-content { padding-top: 5rem; }
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -221,7 +200,6 @@
       );
       border-radius: 2px;
     }
-
     .section-header { margin-bottom: 3rem; }
     .section-num {
       font-size: 0.65rem;
@@ -238,14 +216,101 @@
       letter-spacing: -0.02em;
     }
 
-    /* ABOUT ME */
+    /* ====================== */
+    /* TOGGLEABLE CARD SYSTEM */
+    /* ====================== */
+    .card-toggle-indicator {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.3s;
+    }
+    .card-toggle-indicator .toggle-icon {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .card-toggle-indicator .toggle-icon::before,
+    .card-toggle-indicator .toggle-icon::after {
+      content: '';
+      position: absolute;
+      background: var(--text-faint);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .card-toggle-indicator .toggle-icon::before {
+      top: 50%; left: 2px; right: 2px;
+      height: 1.5px;
+      transform: translateY(-50%);
+    }
+    .card-toggle-indicator .toggle-icon::after {
+      left: 50%; top: 2px; bottom: 2px;
+      width: 1.5px;
+      transform: translateX(-50%);
+    }
+    .toggled .card-toggle-indicator .toggle-icon::after {
+      transform: translateX(-50%) rotate(90deg);
+    }
+
+    .card-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                  padding 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.35s ease;
+      opacity: 0;
+      padding: 0 2rem;
+      border-left: 3px solid transparent;
+      background: var(--theme-faint);
+    }
+    .card-detail.open {
+      max-height: 800px;
+      opacity: 1;
+      padding: 1.8rem 2rem;
+      border-left-color: var(--theme);
+    }
+    .card-detail-inner {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.85;
+      font-weight: 400;
+    }
+    .card-detail-inner p + p { margin-top: 1rem; }
+    .card-detail-inner img {
+      max-width: 100%;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+    }
+    .card-detail-inner .detail-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 0.5rem;
+    }
+    .card-detail-placeholder {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      font-style: italic;
+    }
+
+    /* ========== */
+    /* ABOUT ME   */
+    /* ========== */
     .about-intro {
       margin-bottom: 2rem;
       font-size: 0.92rem;
       color: var(--text-dim);
       line-height: 1.85;
     }
-
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -257,11 +322,12 @@
       background: var(--bg);
       padding: 2rem;
       transition: background 0.3s;
+      cursor: pointer;
+      user-select: none;
     }
-    .about-card:hover {
-      background: var(--theme);
-    }
+    .about-card:hover { background: var(--theme); }
     .about-card.full-width { grid-column: 1 / -1; }
+    .about-card.toggled { background: var(--theme); }
 
     .about-card-label {
       font-size: 0.6rem;
@@ -272,10 +338,10 @@
       margin-bottom: 0.8rem;
       transition: color 0.3s;
     }
-    .about-card:hover .about-card-label {
+    .about-card:hover .about-card-label,
+    .about-card.toggled .about-card-label {
       color: rgba(255, 255, 255, 0.45);
     }
-
     .about-card-text {
       font-size: 0.88rem;
       color: var(--text);
@@ -283,25 +349,49 @@
       font-weight: 500;
       transition: color 0.3s;
     }
-    .about-card:hover .about-card-text {
+    .about-card:hover .about-card-text,
+    .about-card.toggled .about-card-text {
       color: rgba(255, 255, 255, 0.85);
     }
-
     .about-card-text a {
       color: var(--theme);
       text-decoration: none;
       border-bottom: 1px solid var(--border);
       transition: color 0.3s, border-color 0.3s;
     }
-    .about-card:hover .about-card-text a {
+    .about-card:hover .about-card-text a,
+    .about-card.toggled .about-card-text a {
       color: #FFFFFF;
       border-bottom-color: rgba(255, 255, 255, 0.3);
     }
-    .about-card:hover .about-card-text a:hover {
+    .about-card:hover .about-card-text a:hover,
+    .about-card.toggled .about-card-text a:hover {
       border-bottom-color: #FFFFFF;
     }
+    .about-card:hover .card-toggle-indicator,
+    .about-card.toggled .card-toggle-indicator {
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .about-card:hover .card-toggle-indicator .toggle-icon::before,
+    .about-card:hover .card-toggle-indicator .toggle-icon::after,
+    .about-card.toggled .card-toggle-indicator .toggle-icon::before,
+    .about-card.toggled .card-toggle-indicator .toggle-icon::after {
+      background: rgba(255, 255, 255, 0.45);
+    }
 
-    /* RESEARCH */
+    .about-detail-container {
+      border: 1px solid var(--border);
+      border-top: none;
+    }
+    .about-detail-container .card-detail { border-left: none; }
+    .about-detail-container .card-detail.open {
+      border-left: none;
+      border-top: 3px solid var(--theme);
+    }
+
+    /* ========== */
+    /* RESEARCH   */
+    /* ========== */
     .research-subsection-title {
       font-size: 0.65rem;
       font-weight: 700;
@@ -318,13 +408,21 @@
       flex-direction: column;
       gap: 2.5rem;
     }
+    .research-item { display: flex; flex-direction: column; }
+
     .research-entry {
       padding: 1.6rem 2rem;
       border-left: 3px solid var(--border);
       background: var(--bg);
       transition: background 0.3s, border-color 0.3s;
+      cursor: pointer;
+      user-select: none;
     }
     .research-entry:hover {
+      background: var(--theme);
+      border-left-color: rgba(255, 255, 255, 0.3);
+    }
+    .research-entry.toggled {
       background: var(--theme);
       border-left-color: rgba(255, 255, 255, 0.3);
     }
@@ -341,7 +439,8 @@
       color: var(--theme);
       transition: color 0.3s;
     }
-    .research-entry:hover .research-role { color: #FFFFFF; }
+    .research-entry:hover .research-role,
+    .research-entry.toggled .research-role { color: #FFFFFF; }
     .research-period {
       font-size: 0.65rem;
       font-weight: 600;
@@ -349,7 +448,8 @@
       letter-spacing: 0.1em;
       transition: color 0.3s;
     }
-    .research-entry:hover .research-period { color: rgba(255, 255, 255, 0.45); }
+    .research-entry:hover .research-period,
+    .research-entry.toggled .research-period { color: rgba(255, 255, 255, 0.45); }
     .research-place {
       font-size: 0.82rem;
       color: var(--text);
@@ -357,7 +457,8 @@
       margin-bottom: 0.6rem;
       transition: color 0.3s;
     }
-    .research-entry:hover .research-place { color: rgba(255, 255, 255, 0.65); }
+    .research-entry:hover .research-place,
+    .research-entry.toggled .research-place { color: rgba(255, 255, 255, 0.65); }
     .research-desc {
       font-size: 0.88rem;
       color: var(--text);
@@ -365,13 +466,15 @@
       line-height: 1.85;
       transition: color 0.3s;
     }
-    .research-entry:hover .research-desc { color: rgba(255, 255, 255, 0.85); }
+    .research-entry:hover .research-desc,
+    .research-entry.toggled .research-desc { color: rgba(255, 255, 255, 0.85); }
     .research-desc strong {
       color: var(--theme);
       font-weight: 700;
       transition: color 0.3s;
     }
-    .research-entry:hover .research-desc strong { color: #FFFFFF; }
+    .research-entry:hover .research-desc strong,
+    .research-entry.toggled .research-desc strong { color: #FFFFFF; }
     .research-tags {
       display: flex;
       flex-wrap: wrap;
@@ -387,13 +490,20 @@
       letter-spacing: 0.06em;
       transition: all 0.3s;
     }
-    .research-entry:hover .r-tag {
+    .research-entry:hover .r-tag,
+    .research-entry.toggled .r-tag {
       border-color: rgba(255, 255, 255, 0.25);
       color: rgba(255, 255, 255, 0.7);
     }
-    .research-entry:hover .r-tag:hover {
-      border-color: #FFFFFF;
-      color: #FFFFFF;
+    .research-entry:hover .card-toggle-indicator,
+    .research-entry.toggled .card-toggle-indicator {
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .research-entry:hover .card-toggle-indicator .toggle-icon::before,
+    .research-entry:hover .card-toggle-indicator .toggle-icon::after,
+    .research-entry.toggled .card-toggle-indicator .toggle-icon::before,
+    .research-entry.toggled .card-toggle-indicator .toggle-icon::after {
+      background: rgba(255, 255, 255, 0.45);
     }
 
     /* MOTIVATION */
@@ -415,8 +525,12 @@
       line-height: 1.8;
     }
 
-    /* EDUCATION */
+    /* ========== */
+    /* EDUCATION  */
+    /* ========== */
     .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+    .edu-item { display: flex; flex-direction: column; }
+
     .edu-card {
       border: 1px solid var(--border);
       padding: 1.6rem 2rem;
@@ -425,8 +539,14 @@
       gap: 0.3rem 1rem;
       background: var(--bg);
       transition: background 0.3s, border-color 0.3s;
+      cursor: pointer;
+      user-select: none;
     }
     .edu-card:hover {
+      background: var(--theme);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .edu-card.toggled {
       background: var(--theme);
       border-color: rgba(255, 255, 255, 0.1);
     }
@@ -436,7 +556,8 @@
       color: var(--theme);
       transition: color 0.3s;
     }
-    .edu-card:hover .edu-degree { color: #FFFFFF; }
+    .edu-card:hover .edu-degree,
+    .edu-card.toggled .edu-degree { color: #FFFFFF; }
     .edu-period {
       font-size: 0.65rem;
       font-weight: 600;
@@ -448,7 +569,8 @@
       padding-top: 0.3rem;
       transition: color 0.3s;
     }
-    .edu-card:hover .edu-period { color: rgba(255, 255, 255, 0.45); }
+    .edu-card:hover .edu-period,
+    .edu-card.toggled .edu-period { color: rgba(255, 255, 255, 0.45); }
     .edu-institution {
       font-size: 0.85rem;
       color: var(--text);
@@ -456,7 +578,27 @@
       grid-column: 1 / -1;
       transition: color 0.3s;
     }
-    .edu-card:hover .edu-institution { color: rgba(255, 255, 255, 0.65); }
+    .edu-card:hover .edu-institution,
+    .edu-card.toggled .edu-institution { color: rgba(255, 255, 255, 0.65); }
+    .edu-card .card-toggle-indicator { grid-column: 1 / -1; }
+    .edu-card:hover .card-toggle-indicator,
+    .edu-card.toggled .card-toggle-indicator {
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .edu-card:hover .card-toggle-indicator .toggle-icon::before,
+    .edu-card:hover .card-toggle-indicator .toggle-icon::after,
+    .edu-card.toggled .card-toggle-indicator .toggle-icon::before,
+    .edu-card.toggled .card-toggle-indicator .toggle-icon::after {
+      background: rgba(255, 255, 255, 0.45);
+    }
+    .edu-item .card-detail {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-left: none;
+    }
+    .edu-item .card-detail.open {
+      border-left: 3px solid var(--theme);
+    }
 
     /* FOOTER */
     footer {
@@ -477,12 +619,9 @@
       transform: translateY(20px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* PAGE NAV FOOTER */
+    /* PAGE NAV */
     .page-nav {
       max-width: 1400px;
       margin: 0 auto;
@@ -501,21 +640,9 @@
       cursor: pointer;
       transition: color 0.2s;
     }
-    .page-nav a:hover {
-      color: var(--theme);
-    }
-    .page-nav .next-label {
-      text-align: right;
-    }
-    .page-nav .next-title {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--theme);
-      letter-spacing: -0.01em;
-      text-transform: none;
-      margin-top: 0.3rem;
-    }
+    .page-nav a:hover { color: var(--theme); }
+    .page-nav .next-label { text-align: right; }
+    .page-nav .next-title,
     .page-nav .prev-title {
       display: block;
       font-size: 1.2rem;
@@ -538,6 +665,7 @@
       .hero-tagline { right: 1.5rem; bottom: 2rem; }
       .hero-nav-hint { left: 1.5rem; bottom: 2rem; }
       .page-nav { padding: 3rem 1.5rem 4rem; }
+      .card-detail.open { padding: 1.5rem 1.5rem; }
     }
   </style>
 </head>
@@ -584,30 +712,57 @@
           <h2 class="section-title">About Me</h2>
         </div>
 
-        <div class="about-intro reveal">
-        </div>
+        <div class="about-intro reveal"></div>
 
         <div class="about-grid reveal">
-          <div class="about-card full-width">
+          <div class="about-card full-width" onclick="toggleAboutCard(this, 'about-detail-links')">
             <div class="about-card-label">Links</div>
             <div class="about-card-text">
-              <a href="https://instagram.com/_.fmpril._" target="_blank">Instagram · _.fmpril._</a><br>
-              <a href="https://github.com/hmp94" target="_blank">GitHub · hmp94</a>
+              <a href="https://instagram.com/_.fmpril._" target="_blank" onclick="event.stopPropagation()">Instagram · _.fmpril._</a><br>
+              <a href="https://github.com/hmp94" target="_blank" onclick="event.stopPropagation()">GitHub · hmp94</a>
+            </div>
+            <div class="card-toggle-indicator">
+              <span class="toggle-icon"></span> Details
             </div>
           </div>
 
-          <div class="about-card">
+          <div class="about-card" onclick="toggleAboutCard(this, 'about-detail-love')">
             <div class="about-card-label">Love</div>
             <div class="about-card-text">
               Being with my lovely gf (stbw) since secondary school for 6 years. Love you bếp.
             </div>
+            <div class="card-toggle-indicator">
+              <span class="toggle-icon"></span> Details
+            </div>
           </div>
 
-          <div class="about-card">
+          <div class="about-card" onclick="toggleAboutCard(this, 'about-detail-interests')">
             <div class="about-card-label">Interests</div>
             <div class="about-card-text">
               I love Messi, Sherlock Holmes, L Lawliet, and anyone whose intellectual genius is their whole personality.
               I have a hobby of tasting coffee and trying out new fragrances. I play (too much) mobile games.
+            </div>
+            <div class="card-toggle-indicator">
+              <span class="toggle-icon"></span> Details
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail panels for about cards (below grid) -->
+        <div class="about-detail-container reveal">
+          <div class="card-detail" id="about-detail-links">
+            <div class="card-detail-inner">
+              <p class="card-detail-placeholder">Add your detailed links description, figures, or thoughts here.</p>
+            </div>
+          </div>
+          <div class="card-detail" id="about-detail-love">
+            <div class="card-detail-inner">
+              <p class="card-detail-placeholder">Add your figures or thoughts here.</p>
+            </div>
+          </div>
+          <div class="card-detail" id="about-detail-interests">
+            <div class="card-detail-inner">
+              <p class="card-detail-placeholder">Add your figures or thoughts here.</p>
             </div>
           </div>
         </div>
@@ -615,14 +770,8 @@
     </section>
 
     <div class="page-nav">
-      <a onclick="navigateTo('hero')">
-        &larr; Back
-        <span class="prev-title">Home</span>
-      </a>
-      <a onclick="navigateTo('research')" class="next-label">
-        Next &rarr;
-        <span class="next-title">Research</span>
-      </a>
+      <a onclick="navigateTo('hero')">&larr; Back <span class="prev-title">Home</span></a>
+      <a onclick="navigateTo('research')" class="next-label">Next &rarr; <span class="next-title">Research</span></a>
     </div>
   </div>
 </div>
@@ -642,125 +791,183 @@
         <div class="research-subsection-title reveal">Research Assistant</div>
 
         <div class="research-list">
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Research Intern — Semantic Memory Lab</span>
-              <span class="research-period">2026 — present</span>
+
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Research Intern — Semantic Memory Lab</span>
+                <span class="research-period">2026 — present</span>
+              </div>
+              <div class="research-place">Donders Institute for Brain, Cognition and Behaviour · Radboud University, Nijmegen</div>
+              <div class="research-desc">
+                Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
+                Investigating how functional hippocampal cells support schema learning.
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">Hex Maze</span>
+                <span class="r-tag">Spatial Navigation</span>
+                <span class="r-tag">Rodent Electrophysiology</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">Donders Institute for Brain, Cognition and Behaviour · Radboud University, Nijmegen</div>
-            <div class="research-desc">
-              Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
-              Investigating how functional hippocampal cells support schema learning.
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">Hex Maze</span>
-              <span class="r-tag">Spatial Navigation</span>
-              <span class="r-tag">Rodent Electrophysiology</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the Donders internship here.</p>
+              </div>
             </div>
           </div>
 
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Honours Research Intern</span>
-              <span class="research-period">2025</span>
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Honours Research Intern</span>
+                <span class="research-period">2025</span>
+              </div>
+              <div class="research-place">University of Amsterdam · Dr. Filip van Opstal</div>
+              <div class="research-desc">
+                Studied <strong>mental resource depletion</strong> via pupillometry, testing whether resources depleted by
+                one cognitive domain can interfere with another.
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">Pupillometry</span>
+                <span class="r-tag">Cognitive Resources</span>
+                <span class="r-tag">Mind Wandering</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">University of Amsterdam · Dr. Filip van Opstal</div>
-            <div class="research-desc">
-              Studied <strong>mental resource depletion</strong> via pupillometry, testing whether resources depleted by
-              one cognitive domain can interfere with another.
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">Pupillometry</span>
-              <span class="r-tag">Cognitive Resources</span>
-              <span class="r-tag">Mind Wandering</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the pupillometry project here.</p>
+              </div>
             </div>
           </div>
 
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Research Assistant — Brain Health Lab</span>
-              <span class="research-period">2025 — 2026</span>
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Research Assistant — Brain Health Lab</span>
+                <span class="research-period">2025 — 2026</span>
+              </div>
+              <div class="research-place">Dr. Huong's Lab, Vietnam</div>
+              <div class="research-desc">
+                VR-based cognitive assessment for MCI patients and ML classification of
+                Alzheimer's disease using Vietnamese speech data.
+                Received Outstanding Research Award at BrainConnects 2025 !!! (Yay).
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">VR Assessment</span>
+                <span class="r-tag">ML Classification</span>
+                <span class="r-tag">Clinical Neuroscience</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">Dr. Huong's Lab, Vietnam</div>
-            <div class="research-desc">
-              VR-based cognitive assessment for MCI patients and ML classification of
-              Alzheimer's disease using Vietnamese speech data.
-              Received Outstanding Research Award at BrainConnects 2025 !!! (Yay).
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">VR Assessment</span>
-              <span class="r-tag">ML Classification</span>
-              <span class="r-tag">Clinical Neuroscience</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the Brain Health Lab work here.</p>
+              </div>
             </div>
           </div>
+
         </div>
 
         <div class="research-subsection-title reveal">Personal Project</div>
 
         <div class="research-list">
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Bachelor's Thesis</span>
-              <span class="research-period">2025 — 2026</span>
+
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Bachelor's Thesis</span>
+                <span class="research-period">2025 — 2026</span>
+              </div>
+              <div class="research-place">University of Amsterdam · Dr. Romke Rouw</div>
+              <div class="research-desc">
+                Investigated cross-dimensional tactile interference between perceived softness
+                and stickiness. Methods included logistic regression and Python-based
+                data analysis and visualization.
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">Tactile Perception</span>
+                <span class="r-tag">Psychophysics</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">University of Amsterdam · Dr. Romke Rouw</div>
-            <div class="research-desc">
-              Investigated cross-dimensional tactile interference between perceived softness
-              and stickiness. Methods included logistic regression and Python-based
-              data analysis and visualization.
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">Tactile Perception</span>
-              <span class="r-tag">Psychophysics</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the thesis here.</p>
+              </div>
             </div>
           </div>
 
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Categorical Perception of Morphed Dog-Cat</span>
-              <span class="research-period">2024</span>
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Categorical Perception of Morphed Dog-Cat</span>
+                <span class="research-period">2024</span>
+              </div>
+              <div class="research-place">University of Amsterdam · Personal Project</div>
+              <div class="research-desc">
+                Extended behavioral experiment studying <strong>categorical perception</strong> using morphed dog-cat stimuli
+                to examine how perceptual boundaries shape object categorization.
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">Categorical Perception</span>
+                <span class="r-tag">PsychoPy</span>
+                <span class="r-tag">Behavioral Experiment</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">University of Amsterdam · Personal Project</div>
-            <div class="research-desc">
-              Extended behavioral experiment studying <strong>categorical perception</strong> using morphed dog-cat stimuli
-              to examine how perceptual boundaries shape object categorization.
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">Categorical Perception</span>
-              <span class="r-tag">PsychoPy</span>
-              <span class="r-tag">Behavioral Experiment</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
+              </div>
             </div>
           </div>
 
-          <div class="research-entry reveal">
-            <div class="research-meta">
-              <span class="research-role">Color-Shape Feature Encoding in Visual Short-term Memory</span>
-              <span class="research-period">2024</span>
+          <div class="research-item reveal">
+            <div class="research-entry" onclick="toggleCard(this)">
+              <div class="research-meta">
+                <span class="research-role">Color-Shape Feature Encoding in Visual Short-term Memory</span>
+                <span class="research-period">2024</span>
+              </div>
+              <div class="research-place">University of Amsterdam · Personal Project</div>
+              <div class="research-desc">
+                Designed an experiment to study the <strong>encoding of color-shape visual features</strong> for fragile
+                and working short-term memory using a change detection task.
+              </div>
+              <div class="research-tags">
+                <span class="r-tag">Visual Short-term Memory</span>
+                <span class="r-tag">Change Detection</span>
+                <span class="r-tag">Feature Encoding</span>
+              </div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
             </div>
-            <div class="research-place">University of Amsterdam · Personal Project</div>
-            <div class="research-desc">
-              Designed an experiment to study the <strong>encoding of color-shape visual features</strong> for fragile
-              and working short-term memory using a change detection task.
-            </div>
-            <div class="research-tags">
-              <span class="r-tag">Visual Short-term Memory</span>
-              <span class="r-tag">Change Detection</span>
-              <span class="r-tag">Feature Encoding</span>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
 
     <div class="page-nav">
-      <a onclick="navigateTo('about')">
-        &larr; Previous
-        <span class="prev-title">About Me</span>
-      </a>
-      <a onclick="navigateTo('motivation')" class="next-label">
-        Next &rarr;
-        <span class="next-title">Motivation</span>
-      </a>
+      <a onclick="navigateTo('about')">&larr; Previous <span class="prev-title">About Me</span></a>
+      <a onclick="navigateTo('motivation')" class="next-label">Next &rarr; <span class="next-title">Motivation</span></a>
     </div>
   </div>
 </div>
@@ -798,14 +1005,8 @@
     </section>
 
     <div class="page-nav">
-      <a onclick="navigateTo('research')">
-        &larr; Previous
-        <span class="prev-title">Research</span>
-      </a>
-      <a onclick="navigateTo('education')" class="next-label">
-        Next &rarr;
-        <span class="next-title">Education</span>
-      </a>
+      <a onclick="navigateTo('research')">&larr; Previous <span class="prev-title">Research</span></a>
+      <a onclick="navigateTo('education')" class="next-label">Next &rarr; <span class="next-title">Education</span></a>
     </div>
   </div>
 </div>
@@ -823,29 +1024,71 @@
         </div>
 
         <div class="edu-list">
-          <div class="edu-card reveal">
-            <div class="edu-degree">BSc Psychology — Brain and Cognition</div>
-            <div class="edu-period">2023 — 2026</div>
-            <div class="edu-institution">University of Amsterdam, Netherlands</div>
+
+          <div class="edu-item reveal">
+            <div class="edu-card" onclick="toggleCard(this)">
+              <div class="edu-degree">BSc Psychology — Brain and Cognition</div>
+              <div class="edu-period">2023 — 2026</div>
+              <div class="edu-institution">University of Amsterdam, Netherlands</div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
+            </div>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about your BSc here.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="edu-card reveal">
-            <div class="edu-degree">Exchange Semester</div>
-            <div class="edu-period">2026</div>
-            <div class="edu-institution">National University of Singapore</div>
+          <div class="edu-item reveal">
+            <div class="edu-card" onclick="toggleCard(this)">
+              <div class="edu-degree">Exchange Semester</div>
+              <div class="edu-period">2026</div>
+              <div class="edu-institution">National University of Singapore</div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
+            </div>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about NUS here.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="edu-card reveal">
-            <div class="edu-degree">High School for the Gifted</div>
-            <div class="edu-period">2020 - 2023</div>
-            <div class="edu-institution">Le Hong Phong</div>
+          <div class="edu-item reveal">
+            <div class="edu-card" onclick="toggleCard(this)">
+              <div class="edu-degree">High School for the Gifted</div>
+              <div class="edu-period">2020 - 2023</div>
+              <div class="edu-institution">Le Hong Phong</div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
+            </div>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="edu-card reveal">
-            <div class="edu-degree">High School for the Gifted (Secondary)</div>
-            <div class="edu-period">2016 - 2020</div>
-            <div class="edu-institution">Tran Dai Nghia</div>
+          <div class="edu-item reveal">
+            <div class="edu-card" onclick="toggleCard(this)">
+              <div class="edu-degree">High School for the Gifted (Secondary)</div>
+              <div class="edu-period">2016 - 2020</div>
+              <div class="edu-institution">Tran Dai Nghia</div>
+              <div class="card-toggle-indicator">
+                <span class="toggle-icon"></span> Details
+              </div>
+            </div>
+            <div class="card-detail">
+              <div class="card-detail-inner">
+                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -857,95 +1100,109 @@
     </footer>
 
     <div class="page-nav">
-      <a onclick="navigateTo('motivation')">
-        &larr; Previous
-        <span class="prev-title">Motivation</span>
-      </a>
-      <a onclick="navigateTo('hero')" class="next-label">
-        Back to Home &rarr;
-      </a>
+      <a onclick="navigateTo('motivation')">&larr; Previous <span class="prev-title">Motivation</span></a>
+      <a onclick="navigateTo('hero')" class="next-label">Back to Home &rarr;</a>
     </div>
   </div>
 </div>
 
 <script>
-  const pages = ['hero', 'about', 'research', 'motivation', 'education'];
+  /* ======================== */
+  /* TOGGLE LOGIC             */
+  /* ======================== */
+
+  // For research entries and edu cards (detail is next sibling)
+  function toggleCard(cardEl) {
+    var detailEl = cardEl.nextElementSibling;
+    var isOpen = detailEl.classList.contains('open');
+
+    // Close all siblings in the same list
+    var parent = cardEl.closest('.research-list, .edu-list');
+    if (parent) {
+      parent.querySelectorAll('.card-detail.open').forEach(function(d) { d.classList.remove('open'); });
+      parent.querySelectorAll('.toggled').forEach(function(c) { c.classList.remove('toggled'); });
+    }
+
+    if (!isOpen) {
+      detailEl.classList.add('open');
+      cardEl.classList.add('toggled');
+    }
+  }
+
+  // For about cards (detail panels are in a container below grid)
+  function toggleAboutCard(cardEl, detailId) {
+    var detailEl = document.getElementById(detailId);
+    var isOpen = detailEl.classList.contains('open');
+
+    // Close all about details
+    document.querySelectorAll('.about-detail-container .card-detail.open').forEach(function(d) { d.classList.remove('open'); });
+    document.querySelectorAll('.about-card.toggled').forEach(function(c) { c.classList.remove('toggled'); });
+
+    if (!isOpen) {
+      detailEl.classList.add('open');
+      cardEl.classList.add('toggled');
+    }
+  }
+
+  /* ======================== */
+  /* PAGE NAVIGATION          */
+  /* ======================== */
+  var pages = ['hero', 'about', 'research', 'motivation', 'education'];
 
   function navigateTo(pageName) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(p => {
+    document.querySelectorAll('.page').forEach(function(p) {
       p.classList.remove('visible');
-      setTimeout(() => p.classList.remove('active'), 400);
+      setTimeout(function() { p.classList.remove('active'); }, 400);
     });
 
-    // Show target page after fade out
-    setTimeout(() => {
-      const target = document.getElementById('page-' + pageName);
+    setTimeout(function() {
+      var target = document.getElementById('page-' + pageName);
       target.classList.add('active');
       window.scrollTo(0, 0);
 
-      // Small delay for the display:block to take effect before fading in
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
           target.classList.add('visible');
         });
       });
 
-      // Trigger reveal animations on the new page
-      setTimeout(() => {
-        target.querySelectorAll('.reveal').forEach((el, i) => {
-          setTimeout(() => el.classList.add('visible'), i * 80);
+      setTimeout(function() {
+        target.querySelectorAll('.reveal').forEach(function(el, i) {
+          setTimeout(function() { el.classList.add('visible'); }, i * 80);
         });
       }, 200);
 
-      // Update nav active state
-      document.querySelectorAll('.nav-links a').forEach(a => {
+      document.querySelectorAll('.nav-links a').forEach(function(a) {
         a.classList.remove('active');
-        if (a.dataset.page === pageName) {
-          a.classList.add('active');
-        }
+        if (a.dataset.page === pageName) a.classList.add('active');
       });
 
-      // Update URL hash
       history.pushState(null, '', '#' + pageName);
     }, 400);
   }
 
-  // Handle browser back/forward
-  window.addEventListener('popstate', () => {
-    const hash = location.hash.replace('#', '') || 'hero';
-    if (pages.includes(hash)) {
-      navigateTo(hash);
-    }
+  window.addEventListener('popstate', function() {
+    var hash = location.hash.replace('#', '') || 'hero';
+    if (pages.indexOf(hash) !== -1) navigateTo(hash);
   });
 
-  // Handle initial hash on load
-  window.addEventListener('DOMContentLoaded', () => {
-    const hash = location.hash.replace('#', '');
-    if (hash && pages.includes(hash) && hash !== 'hero') {
-      // Immediately switch without animation on first load
-      document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active', 'visible');
-      });
-      const target = document.getElementById('page-' + hash);
+  window.addEventListener('DOMContentLoaded', function() {
+    var hash = location.hash.replace('#', '');
+    if (hash && pages.indexOf(hash) !== -1 && hash !== 'hero') {
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active', 'visible'); });
+      var target = document.getElementById('page-' + hash);
       target.classList.add('active', 'visible');
-      target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-
-      document.querySelectorAll('.nav-links a').forEach(a => {
+      target.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      document.querySelectorAll('.nav-links a').forEach(function(a) {
         a.classList.remove('active');
         if (a.dataset.page === hash) a.classList.add('active');
       });
     }
   });
 
-  // Nav scroll tint
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
   });
 </script>
 
