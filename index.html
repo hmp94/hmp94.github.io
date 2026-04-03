@@ -109,7 +109,7 @@
     }
     .hero-name {
       font-weight: 800;
-      font-size: clamp(4rem, 12vw, 9rem);
+      font-size: clamp(5rem, 14vw, 12rem);
       line-height: 0.95;
       color: var(--theme);
       letter-spacing: -0.03em;
@@ -121,7 +121,7 @@
       position: absolute;
       bottom: 2.5rem;
       right: 3rem;
-      font-size: 0.72rem;
+      font-size: 0.9rem;
       font-weight: 500;
       color: var(--text-dim);
       letter-spacing: 0.06em;
@@ -183,6 +183,13 @@
     }
 
     /* ABOUT ME */
+    .about-intro {
+      margin-bottom: 2rem;
+      font-size: 0.92rem;
+      color: var(--text-dim);
+      line-height: 1.85;
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -193,31 +200,13 @@
     .about-card {
       background: var(--bg);
       padding: 2rem;
-      transition: background 0.25s;
+      transition: background 0.3s;
     }
-    .about-card:hover { background: var(--theme-faint); }
+    .about-card:hover {
+      background: var(--theme);
+    }
     .about-card.full-width { grid-column: 1 / -1; }
 
-    /* Fixed: white background + green text */
-    .about-card.dark-accent {
-      background: var(--bg);
-    }
-    .about-card.dark-accent:hover {
-      background: var(--theme-faint);
-    }
-    .about-card.dark-accent .about-card-label {
-      color: var(--text-faint);
-    }
-    .about-card.dark-accent .about-card-text {
-      color: var(--text-dim);
-    }
-    .about-card.dark-accent .about-card-text a {
-      color: var(--theme);
-      border-bottom-color: var(--border);
-    }
-    .about-card.dark-accent .about-card-text a:hover {
-      border-bottom-color: var(--theme);
-    }
     .about-card-label {
       font-size: 0.6rem;
       font-weight: 700;
@@ -225,20 +214,36 @@
       text-transform: uppercase;
       color: var(--text-faint);
       margin-bottom: 0.8rem;
+      transition: color 0.3s;
     }
+    .about-card:hover .about-card-label {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
     .about-card-text {
       font-size: 0.88rem;
-      color: var(--text-dim);
+      color: var(--text);
       line-height: 1.8;
-      font-weight: 400;
+      font-weight: 500;
+      transition: color 0.3s;
     }
+    .about-card:hover .about-card-text {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
     .about-card-text a {
       color: var(--theme);
       text-decoration: none;
       border-bottom: 1px solid var(--border);
-      transition: border-color 0.2s;
+      transition: color 0.3s, border-color 0.3s;
     }
-    .about-card-text a:hover { border-color: var(--theme); }
+    .about-card:hover .about-card-text a {
+      color: #FFFFFF;
+      border-bottom-color: rgba(255, 255, 255, 0.3);
+    }
+    .about-card:hover .about-card-text a:hover {
+      border-bottom-color: #FFFFFF;
+    }
 
     /* RESEARCH */
     .research-subsection-title {
@@ -258,11 +263,15 @@
       gap: 2.5rem;
     }
     .research-entry {
-      padding-left: 1.5rem;
-      border-left: 2px solid var(--border);
-      transition: border-color 0.3s;
+      padding: 1.6rem 2rem;
+      border-left: 3px solid var(--border);
+      background: var(--bg);
+      transition: background 0.3s, border-color 0.3s;
     }
-    .research-entry:hover { border-color: var(--theme); }
+    .research-entry:hover {
+      background: var(--theme);
+      border-left-color: rgba(255, 255, 255, 0.3);
+    }
     .research-meta {
       display: flex;
       align-items: baseline;
@@ -274,24 +283,39 @@
       font-size: 1rem;
       font-weight: 700;
       color: var(--theme);
+      transition: color 0.3s;
     }
+    .research-entry:hover .research-role { color: #FFFFFF; }
     .research-period {
       font-size: 0.65rem;
       font-weight: 600;
       color: var(--text-faint);
       letter-spacing: 0.1em;
+      transition: color 0.3s;
     }
+    .research-entry:hover .research-period { color: rgba(255, 255, 255, 0.45); }
     .research-place {
       font-size: 0.82rem;
-      color: var(--text-dim);
+      color: var(--text);
+      font-weight: 500;
       margin-bottom: 0.6rem;
+      transition: color 0.3s;
     }
+    .research-entry:hover .research-place { color: rgba(255, 255, 255, 0.65); }
     .research-desc {
       font-size: 0.88rem;
-      color: var(--text-dim);
+      color: var(--text);
+      font-weight: 500;
       line-height: 1.85;
+      transition: color 0.3s;
     }
-    .research-desc strong { color: var(--text); font-weight: 600; }
+    .research-entry:hover .research-desc { color: rgba(255, 255, 255, 0.85); }
+    .research-desc strong {
+      color: var(--theme);
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    .research-entry:hover .research-desc strong { color: #FFFFFF; }
     .research-tags {
       display: flex;
       flex-wrap: wrap;
@@ -303,11 +327,18 @@
       font-weight: 600;
       padding: 0.25rem 0.65rem;
       border: 1px solid var(--border);
-      color: var(--text-dim);
+      color: var(--text);
       letter-spacing: 0.06em;
-      transition: all 0.2s;
+      transition: all 0.3s;
     }
-    .r-tag:hover { border-color: var(--theme); color: var(--theme); }
+    .research-entry:hover .r-tag {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .research-entry:hover .r-tag:hover {
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
 
     /* MOTIVATION */
     .motivation-text {
@@ -336,14 +367,20 @@
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 0.3rem 1rem;
-      transition: border-color 0.25s, background 0.25s;
+      background: var(--bg);
+      transition: background 0.3s, border-color 0.3s;
     }
-    .edu-card:hover { border-color: var(--border-hover); background: var(--theme-faint); }
+    .edu-card:hover {
+      background: var(--theme);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
     .edu-degree {
       font-size: 1rem;
       font-weight: 700;
       color: var(--theme);
+      transition: color 0.3s;
     }
+    .edu-card:hover .edu-degree { color: #FFFFFF; }
     .edu-period {
       font-size: 0.65rem;
       font-weight: 600;
@@ -353,12 +390,17 @@
       grid-row: 1;
       white-space: nowrap;
       padding-top: 0.3rem;
+      transition: color 0.3s;
     }
+    .edu-card:hover .edu-period { color: rgba(255, 255, 255, 0.45); }
     .edu-institution {
       font-size: 0.85rem;
-      color: var(--text-dim);
+      color: var(--text);
+      font-weight: 500;
       grid-column: 1 / -1;
+      transition: color 0.3s;
     }
+    .edu-card:hover .edu-institution { color: rgba(255, 255, 255, 0.65); }
 
     /* FOOTER */
     footer {
@@ -430,8 +472,13 @@
       <h2 class="section-title">About Me</h2>
     </div>
 
+    <!-- Introduction placeholder -->
+    <div class="about-intro reveal">
+      <!-- Add your introduction text here -->
+    </div>
+
     <div class="about-grid reveal">
-      <div class="about-card full-width dark-accent">
+      <div class="about-card full-width">
         <div class="about-card-label">Links</div>
         <div class="about-card-text">
           <a href="https://instagram.com/_.fmpril._" target="_blank">Instagram · _.fmpril._</a><br>
@@ -446,7 +493,7 @@
         </div>
       </div>
 
-      <div class="about-card dark-accent">
+      <div class="about-card">
         <div class="about-card-label">Interests</div>
         <div class="about-card-text">
           I love Messi, Sherlock Holmes, L Lawliet, and anyone whose intellectual genius is their whole personality.
@@ -540,6 +587,40 @@
         <div class="research-tags">
           <span class="r-tag">Tactile Perception</span>
           <span class="r-tag">Psychophysics</span>
+        </div>
+      </div>
+
+      <div class="research-entry reveal">
+        <div class="research-meta">
+          <span class="research-role">Categorical Perception of Morphed Dog-Cat</span>
+          <span class="research-period">2024</span>
+        </div>
+        <div class="research-place">University of Amsterdam · Personal Project</div>
+        <div class="research-desc">
+          Extended behavioral experiment studying <strong>categorical perception</strong> using morphed dog-cat stimuli
+          to examine how perceptual boundaries shape object categorization.
+        </div>
+        <div class="research-tags">
+          <span class="r-tag">Categorical Perception</span>
+          <span class="r-tag">PsychoPy</span>
+          <span class="r-tag">Behavioral Experiment</span>
+        </div>
+      </div>
+
+      <div class="research-entry reveal">
+        <div class="research-meta">
+          <span class="research-role">Color-Shape Feature Encoding in Visual Short-term Memory</span>
+          <span class="research-period">2024</span>
+        </div>
+        <div class="research-place">University of Amsterdam · Personal Project</div>
+        <div class="research-desc">
+          Designed an experiment to study the <strong>encoding of color-shape visual features</strong> for fragile
+          and working short-term memory using a change detection task.
+        </div>
+        <div class="research-tags">
+          <span class="r-tag">Visual Short-term Memory</span>
+          <span class="r-tag">Change Detection</span>
+          <span class="r-tag">Feature Encoding</span>
         </div>
       </div>
     </div>
