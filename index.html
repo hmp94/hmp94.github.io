@@ -29,14 +29,12 @@
       overflow-x: hidden;
     }
 
-    /* NAV - dark green strip */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
       background: #2C3930;
-      backdrop-filter: blur(16px);
-      border-bottom: none;
       transition: background 0.4s ease;
     }
     nav.scrolled {
@@ -56,6 +54,8 @@
       color: #FFFFFF;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
     }
     .nav-links {
       display: flex;
@@ -70,10 +70,38 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       transition: color 0.2s;
+      cursor: pointer;
+      position: relative;
     }
     .nav-links a:hover { color: #FFFFFF; }
+    .nav-links a.active {
+      color: #FFFFFF;
+    }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #FFFFFF;
+    }
 
-    /* HERO - radial gradients + geometric accents */
+    /* PAGE SYSTEM */
+    .page {
+      display: none;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .page.active {
+      display: block;
+    }
+    .page.visible {
+      opacity: 1;
+    }
+
+    /* HERO */
     #hero {
       height: 100vh;
       display: flex;
@@ -130,6 +158,29 @@
       opacity: 0;
       animation: fadeIn 0.8s 0.8s forwards;
     }
+    .hero-nav-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeIn 0.8s 1.2s forwards;
+    }
+    .hero-nav-hint a {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .hero-nav-hint a:hover {
+      color: var(--theme);
+    }
 
     @keyframes heroIn {
       from { opacity: 0; transform: translateY(30px); }
@@ -140,15 +191,20 @@
       to   { opacity: 1; }
     }
 
+    /* PAGE CONTENT LAYOUT */
+    .page-content {
+      padding-top: 5rem;
+    }
+
     /* SECTIONS */
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 3rem;
     }
-    section { padding: 6rem 0; }
+    section { padding: 4rem 0 6rem; }
 
-    /* SECTION DIVIDERS - thicker accent strip */
+    /* SECTION DIVIDERS */
     .section-divider {
       max-width: 1400px;
       margin: 0 auto;
@@ -426,6 +482,50 @@
       transform: translateY(0);
     }
 
+    /* PAGE NAV FOOTER */
+    .page-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 3rem 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-nav a {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .page-nav a:hover {
+      color: var(--theme);
+    }
+    .page-nav .next-label {
+      text-align: right;
+    }
+    .page-nav .next-title {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--theme);
+      letter-spacing: -0.01em;
+      text-transform: none;
+      margin-top: 0.3rem;
+    }
+    .page-nav .prev-title {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--theme);
+      letter-spacing: -0.01em;
+      text-transform: none;
+      margin-top: 0.3rem;
+    }
+
     @media (max-width: 600px) {
       .about-grid { grid-template-columns: 1fr; }
       .about-card.full-width { grid-column: 1; }
@@ -436,6 +536,8 @@
       .section-divider { padding: 0 1.5rem; }
       nav .nav-inner { padding: 1rem 1.5rem; }
       .hero-tagline { right: 1.5rem; bottom: 2rem; }
+      .hero-nav-hint { left: 1.5rem; bottom: 2rem; }
+      .page-nav { padding: 3rem 1.5rem 4rem; }
     }
   </style>
 </head>
@@ -444,279 +546,397 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <span class="nav-name">Minh Phan</span>
+    <a class="nav-name" onclick="navigateTo('hero')">Minh Phan</a>
     <ul class="nav-links">
-      <li><a href="#about">About Me</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#motivation">Motivation</a></li>
-      <li><a href="#education">Education</a></li>
+      <li><a onclick="navigateTo('about')" data-page="about">About Me</a></li>
+      <li><a onclick="navigateTo('research')" data-page="research">Research</a></li>
+      <li><a onclick="navigateTo('motivation')" data-page="motivation">Motivation</a></li>
+      <li><a onclick="navigateTo('education')" data-page="education">Education</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <h1 class="hero-name">Minh Phan</h1>
-  <div class="hero-tagline">
-    Cognitive Neuroscience Enthusiast<br>and Coffee Lover
-  </div>
-</section>
-
-<!-- ABOUT ME -->
-<div class="section-divider"><div class="section-divider-line"></div></div>
-
-<section id="about">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-num">01</div>
-      <h2 class="section-title">About Me</h2>
+<!-- PAGE: HERO -->
+<div class="page active visible" id="page-hero">
+  <section id="hero">
+    <h1 class="hero-name">Minh Phan</h1>
+    <div class="hero-tagline">
+      Cognitive Neuroscience Enthusiast<br>and Coffee Lover
     </div>
-
-    <!-- Introduction placeholder -->
-    <div class="about-intro reveal">
-      <!-- Add your introduction text here -->
+    <div class="hero-nav-hint">
+      <a onclick="navigateTo('about')">About Me</a>
+      <a onclick="navigateTo('research')">Research</a>
+      <a onclick="navigateTo('motivation')">Motivation</a>
+      <a onclick="navigateTo('education')">Education</a>
     </div>
+  </section>
+</div>
 
-    <div class="about-grid reveal">
-      <div class="about-card full-width">
-        <div class="about-card-label">Links</div>
-        <div class="about-card-text">
-          <a href="https://instagram.com/_.fmpril._" target="_blank">Instagram · _.fmpril._</a><br>
-          <a href="https://github.com/hmp94" target="_blank">GitHub · hmp94</a>
+<!-- PAGE: ABOUT -->
+<div class="page" id="page-about">
+  <div class="page-content">
+    <div class="section-divider"><div class="section-divider-line"></div></div>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-num">01</div>
+          <h2 class="section-title">About Me</h2>
+        </div>
+
+        <div class="about-intro reveal">
+        </div>
+
+        <div class="about-grid reveal">
+          <div class="about-card full-width">
+            <div class="about-card-label">Links</div>
+            <div class="about-card-text">
+              <a href="https://instagram.com/_.fmpril._" target="_blank">Instagram · _.fmpril._</a><br>
+              <a href="https://github.com/hmp94" target="_blank">GitHub · hmp94</a>
+            </div>
+          </div>
+
+          <div class="about-card">
+            <div class="about-card-label">Love</div>
+            <div class="about-card-text">
+              Being with my lovely gf (stbw) since secondary school for 6 years. Love you bếp.
+            </div>
+          </div>
+
+          <div class="about-card">
+            <div class="about-card-label">Interests</div>
+            <div class="about-card-text">
+              I love Messi, Sherlock Holmes, L Lawliet, and anyone whose intellectual genius is their whole personality.
+              I have a hobby of tasting coffee and trying out new fragrances. I play (too much) mobile games.
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="about-card">
-        <div class="about-card-label">Love</div>
-        <div class="about-card-text">
-          Being with my lovely gf (stbw) since secondary school for 6 years. Love you bếp.
-        </div>
-      </div>
-
-      <div class="about-card">
-        <div class="about-card-label">Interests</div>
-        <div class="about-card-text">
-          I love Messi, Sherlock Holmes, L Lawliet, and anyone whose intellectual genius is their whole personality.
-          I have a hobby of tasting coffee and trying out new fragrances. I play (too much) mobile games.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- RESEARCH EXPERIENCE -->
-<div class="section-divider"><div class="section-divider-line"></div></div>
-
-<section id="research">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-num">02</div>
-      <h2 class="section-title">Research Experience</h2>
-    </div>
-
-    <div class="research-subsection-title reveal">Research Assistant</div>
-
-    <div class="research-list">
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Research Intern — Semantic Memory Lab</span>
-          <span class="research-period">2026 — present</span>
-        </div>
-        <div class="research-place">Donders Institute for Brain, Cognition and Behaviour · Radboud University, Nijmegen</div>
-        <div class="research-desc">
-          Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
-          Investigating how functional hippocampal cells support schema learning.
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">Hex Maze</span>
-          <span class="r-tag">Spatial Navigation</span>
-          <span class="r-tag">Rodent Electrophysiology</span>
-        </div>
-      </div>
-
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Honours Research Intern</span>
-          <span class="research-period">2025</span>
-        </div>
-        <div class="research-place">University of Amsterdam · Dr. Filip van Opstal</div>
-        <div class="research-desc">
-          Studied <strong>mental resource depletion</strong> via pupillometry, testing whether resources depleted by
-          one cognitive domain can interfere with another.
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">Pupillometry</span>
-          <span class="r-tag">Cognitive Resources</span>
-          <span class="r-tag">Mind Wandering</span>
-        </div>
-      </div>
-
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Research Assistant — Brain Health Lab</span>
-          <span class="research-period">2025 — 2026</span>
-        </div>
-        <div class="research-place">Dr. Huong's Lab, Vietnam</div>
-        <div class="research-desc">
-          VR-based cognitive assessment for MCI patients and ML classification of
-          Alzheimer's disease using Vietnamese speech data.
-          Received Outstanding Research Award at BrainConnects 2025 !!! (Yay).
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">VR Assessment</span>
-          <span class="r-tag">ML Classification</span>
-          <span class="r-tag">Clinical Neuroscience</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="research-subsection-title reveal">Personal Project</div>
-
-    <div class="research-list">
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Bachelor's Thesis</span>
-          <span class="research-period">2025 — 2026</span>
-        </div>
-        <div class="research-place">University of Amsterdam · Dr. Romke Rouw</div>
-        <div class="research-desc">
-          Investigated cross-dimensional tactile interference between perceived softness
-          and stickiness. Methods included logistic regression and Python-based
-          data analysis and visualization.
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">Tactile Perception</span>
-          <span class="r-tag">Psychophysics</span>
-        </div>
-      </div>
-
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Categorical Perception of Morphed Dog-Cat</span>
-          <span class="research-period">2024</span>
-        </div>
-        <div class="research-place">University of Amsterdam · Personal Project</div>
-        <div class="research-desc">
-          Extended behavioral experiment studying <strong>categorical perception</strong> using morphed dog-cat stimuli
-          to examine how perceptual boundaries shape object categorization.
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">Categorical Perception</span>
-          <span class="r-tag">PsychoPy</span>
-          <span class="r-tag">Behavioral Experiment</span>
-        </div>
-      </div>
-
-      <div class="research-entry reveal">
-        <div class="research-meta">
-          <span class="research-role">Color-Shape Feature Encoding in Visual Short-term Memory</span>
-          <span class="research-period">2024</span>
-        </div>
-        <div class="research-place">University of Amsterdam · Personal Project</div>
-        <div class="research-desc">
-          Designed an experiment to study the <strong>encoding of color-shape visual features</strong> for fragile
-          and working short-term memory using a change detection task.
-        </div>
-        <div class="research-tags">
-          <span class="r-tag">Visual Short-term Memory</span>
-          <span class="r-tag">Change Detection</span>
-          <span class="r-tag">Feature Encoding</span>
-        </div>
-      </div>
+    <div class="page-nav">
+      <a onclick="navigateTo('hero')">
+        &larr; Back
+        <span class="prev-title">Home</span>
+      </a>
+      <a onclick="navigateTo('research')" class="next-label">
+        Next &rarr;
+        <span class="next-title">Research</span>
+      </a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- MOTIVATION -->
-<div class="section-divider"><div class="section-divider-line"></div></div>
+<!-- PAGE: RESEARCH -->
+<div class="page" id="page-research">
+  <div class="page-content">
+    <div class="section-divider"><div class="section-divider-line"></div></div>
 
-<section id="motivation">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-num">03</div>
-      <h2 class="section-title">Motivation & Goal</h2>
-    </div>
+    <section id="research">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-num">02</div>
+          <h2 class="section-title">Research Experience</h2>
+        </div>
 
-    <div class="motivation-text reveal">
-      <p>
-        I was a student from Vietnam who enjoyed doing Maths and Physics back in high school. Then I decided to pursue Psychology at UvA, which surprised
-        lots of people since they think there is no link (yes, Psychology, especially cognitive neuroscience, does use (a lot of) math).
-      </p>
-      <p>
-        I interested in solving Geometry problems and studying Newtonian mechanics back then. I figured out the fact we can comprehend those
-        geometric and spatial relation are insane, so I want to study how a normal (?) human can learn and comprehend 
-        spatial and geometric entities using computational neuroscience approach
-        (I still have no idea).
-      </p>
+        <div class="research-subsection-title reveal">Research Assistant</div>
 
-      <blockquote>
-        "In geometry, what is essential is invisible to the eye;
-        it is only with the mind that you can see well," <span style="font-style: normal;">— Emmanuel Giroux</span>
-      </blockquote>
+        <div class="research-list">
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Research Intern — Semantic Memory Lab</span>
+              <span class="research-period">2026 — present</span>
+            </div>
+            <div class="research-place">Donders Institute for Brain, Cognition and Behaviour · Radboud University, Nijmegen</div>
+            <div class="research-desc">
+              Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
+              Investigating how functional hippocampal cells support schema learning.
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">Hex Maze</span>
+              <span class="r-tag">Spatial Navigation</span>
+              <span class="r-tag">Rodent Electrophysiology</span>
+            </div>
+          </div>
+
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Honours Research Intern</span>
+              <span class="research-period">2025</span>
+            </div>
+            <div class="research-place">University of Amsterdam · Dr. Filip van Opstal</div>
+            <div class="research-desc">
+              Studied <strong>mental resource depletion</strong> via pupillometry, testing whether resources depleted by
+              one cognitive domain can interfere with another.
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">Pupillometry</span>
+              <span class="r-tag">Cognitive Resources</span>
+              <span class="r-tag">Mind Wandering</span>
+            </div>
+          </div>
+
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Research Assistant — Brain Health Lab</span>
+              <span class="research-period">2025 — 2026</span>
+            </div>
+            <div class="research-place">Dr. Huong's Lab, Vietnam</div>
+            <div class="research-desc">
+              VR-based cognitive assessment for MCI patients and ML classification of
+              Alzheimer's disease using Vietnamese speech data.
+              Received Outstanding Research Award at BrainConnects 2025 !!! (Yay).
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">VR Assessment</span>
+              <span class="r-tag">ML Classification</span>
+              <span class="r-tag">Clinical Neuroscience</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="research-subsection-title reveal">Personal Project</div>
+
+        <div class="research-list">
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Bachelor's Thesis</span>
+              <span class="research-period">2025 — 2026</span>
+            </div>
+            <div class="research-place">University of Amsterdam · Dr. Romke Rouw</div>
+            <div class="research-desc">
+              Investigated cross-dimensional tactile interference between perceived softness
+              and stickiness. Methods included logistic regression and Python-based
+              data analysis and visualization.
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">Tactile Perception</span>
+              <span class="r-tag">Psychophysics</span>
+            </div>
+          </div>
+
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Categorical Perception of Morphed Dog-Cat</span>
+              <span class="research-period">2024</span>
+            </div>
+            <div class="research-place">University of Amsterdam · Personal Project</div>
+            <div class="research-desc">
+              Extended behavioral experiment studying <strong>categorical perception</strong> using morphed dog-cat stimuli
+              to examine how perceptual boundaries shape object categorization.
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">Categorical Perception</span>
+              <span class="r-tag">PsychoPy</span>
+              <span class="r-tag">Behavioral Experiment</span>
+            </div>
+          </div>
+
+          <div class="research-entry reveal">
+            <div class="research-meta">
+              <span class="research-role">Color-Shape Feature Encoding in Visual Short-term Memory</span>
+              <span class="research-period">2024</span>
+            </div>
+            <div class="research-place">University of Amsterdam · Personal Project</div>
+            <div class="research-desc">
+              Designed an experiment to study the <strong>encoding of color-shape visual features</strong> for fragile
+              and working short-term memory using a change detection task.
+            </div>
+            <div class="research-tags">
+              <span class="r-tag">Visual Short-term Memory</span>
+              <span class="r-tag">Change Detection</span>
+              <span class="r-tag">Feature Encoding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-nav">
+      <a onclick="navigateTo('about')">
+        &larr; Previous
+        <span class="prev-title">About Me</span>
+      </a>
+      <a onclick="navigateTo('motivation')" class="next-label">
+        Next &rarr;
+        <span class="next-title">Motivation</span>
+      </a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- EDUCATION -->
-<div class="section-divider"><div class="section-divider-line"></div></div>
+<!-- PAGE: MOTIVATION -->
+<div class="page" id="page-motivation">
+  <div class="page-content">
+    <div class="section-divider"><div class="section-divider-line"></div></div>
 
-<section id="education">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-num">04</div>
-      <h2 class="section-title">Education</h2>
-    </div>
+    <section id="motivation">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-num">03</div>
+          <h2 class="section-title">Motivation & Goal</h2>
+        </div>
 
-    <div class="edu-list">
-      
-      <div class="edu-card reveal">
-        <div class="edu-degree">BSc Psychology — Brain and Cognition</div>
-        <div class="edu-period">2023 — 2026</div>
-        <div class="edu-institution">University of Amsterdam, Netherlands</div>
+        <div class="motivation-text reveal">
+          <p>
+            I was a student from Vietnam who enjoyed doing Maths and Physics back in high school. Then I decided to pursue Psychology at UvA, which surprised
+            lots of people since they think there is no link (yes, Psychology, especially cognitive neuroscience, does use (a lot of) math).
+          </p>
+          <p>
+            I interested in solving Geometry problems and studying Newtonian mechanics back then. I figured out the fact we can comprehend those
+            geometric and spatial relation are insane, so I want to study how a normal (?) human can learn and comprehend
+            spatial and geometric entities using computational neuroscience approach
+            (I still have no idea).
+          </p>
+
+          <blockquote>
+            "In geometry, what is essential is invisible to the eye;
+            it is only with the mind that you can see well," <span style="font-style: normal;">— Emmanuel Giroux</span>
+          </blockquote>
+        </div>
       </div>
+    </section>
 
-      <div class="edu-card reveal">
-        <div class="edu-degree">Exchange Semester</div>
-        <div class="edu-period">2026</div>
-        <div class="edu-institution">National University of Singapore</div>
-      </div>
-
-      <div class="edu-card reveal">
-        <div class="edu-degree">High School for the Gifted</div>
-        <div class="edu-period">2020 - 2023</div>
-        <div class="edu-institution">Le Hong Phong</div>
-      </div>
-
-        <div class="edu-card reveal">
-        <div class="edu-degree">High School for the Gifted (Secondary)</div>
-        <div class="edu-period">2016 - 2020</div>
-        <div class="edu-institution">Tran Dai Nghia</div>
-      </div>
+    <div class="page-nav">
+      <a onclick="navigateTo('research')">
+        &larr; Previous
+        <span class="prev-title">Research</span>
+      </a>
+      <a onclick="navigateTo('education')" class="next-label">
+        Next &rarr;
+        <span class="next-title">Education</span>
+      </a>
     </div>
   </div>
-</section>
+</div>
 
-<footer>
-  <div class="container">
-    <p>Built with intention · &copy; 2026 Minh Phan</p>
+<!-- PAGE: EDUCATION -->
+<div class="page" id="page-education">
+  <div class="page-content">
+    <div class="section-divider"><div class="section-divider-line"></div></div>
+
+    <section id="education">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-num">04</div>
+          <h2 class="section-title">Education</h2>
+        </div>
+
+        <div class="edu-list">
+          <div class="edu-card reveal">
+            <div class="edu-degree">BSc Psychology — Brain and Cognition</div>
+            <div class="edu-period">2023 — 2026</div>
+            <div class="edu-institution">University of Amsterdam, Netherlands</div>
+          </div>
+
+          <div class="edu-card reveal">
+            <div class="edu-degree">Exchange Semester</div>
+            <div class="edu-period">2026</div>
+            <div class="edu-institution">National University of Singapore</div>
+          </div>
+
+          <div class="edu-card reveal">
+            <div class="edu-degree">High School for the Gifted</div>
+            <div class="edu-period">2020 - 2023</div>
+            <div class="edu-institution">Le Hong Phong</div>
+          </div>
+
+          <div class="edu-card reveal">
+            <div class="edu-degree">High School for the Gifted (Secondary)</div>
+            <div class="edu-period">2016 - 2020</div>
+            <div class="edu-institution">Tran Dai Nghia</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>Built with intention · &copy; 2026 Minh Phan</p>
+      </div>
+    </footer>
+
+    <div class="page-nav">
+      <a onclick="navigateTo('motivation')">
+        &larr; Previous
+        <span class="prev-title">Motivation</span>
+      </a>
+      <a onclick="navigateTo('hero')" class="next-label">
+        Back to Home &rarr;
+      </a>
+    </div>
   </div>
-</footer>
+</div>
 
 <script>
-  const els = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(el => observer.observe(el));
+  const pages = ['hero', 'about', 'research', 'motivation', 'education'];
 
-  setTimeout(() => {
-    els.forEach(el => el.classList.add('visible'));
-  }, 500);
+  function navigateTo(pageName) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('visible');
+      setTimeout(() => p.classList.remove('active'), 400);
+    });
+
+    // Show target page after fade out
+    setTimeout(() => {
+      const target = document.getElementById('page-' + pageName);
+      target.classList.add('active');
+      window.scrollTo(0, 0);
+
+      // Small delay for the display:block to take effect before fading in
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          target.classList.add('visible');
+        });
+      });
+
+      // Trigger reveal animations on the new page
+      setTimeout(() => {
+        target.querySelectorAll('.reveal').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 80);
+        });
+      }, 200);
+
+      // Update nav active state
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.dataset.page === pageName) {
+          a.classList.add('active');
+        }
+      });
+
+      // Update URL hash
+      history.pushState(null, '', '#' + pageName);
+    }, 400);
+  }
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', () => {
+    const hash = location.hash.replace('#', '') || 'hero';
+    if (pages.includes(hash)) {
+      navigateTo(hash);
+    }
+  });
+
+  // Handle initial hash on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = location.hash.replace('#', '');
+    if (hash && pages.includes(hash) && hash !== 'hero') {
+      // Immediately switch without animation on first load
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active', 'visible');
+      });
+      const target = document.getElementById('page-' + hash);
+      target.classList.add('active', 'visible');
+      target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.dataset.page === hash) a.classList.add('active');
+      });
+    }
+  });
 
   // Nav scroll tint
   const nav = document.querySelector('nav');
