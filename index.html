@@ -271,7 +271,7 @@
       background: var(--theme-faint);
     }
     .card-detail.open {
-      max-height: 800px;
+      max-height: 2400px;
       opacity: 1;
       padding: 1.8rem 2rem;
       border-left-color: var(--theme);
@@ -653,6 +653,97 @@
       margin-top: 0.3rem;
     }
 
+    /* ========================= */
+    /* TRIAL DEMO ANIMATIONS     */
+    /* ========================= */
+    .procedure-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-top: 2rem;
+      margin-bottom: 1.2rem;
+    }
+    .task-header {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--theme);
+      margin-bottom: 0.4rem;
+    }
+    .task-subtitle {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+    }
+    .trial-demo {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 5 / 3;
+      background: #000;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .trial-demo canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .trial-phase-label {
+      font-size: 0.58rem;
+      font-weight: 600;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      text-align: center;
+      min-height: 1.2em;
+    }
+    .procedure-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .procedure-step {
+      margin-bottom: 1.2rem;
+    }
+    .procedure-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 1rem 0;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .procedure-flow .flow-arrow {
+      font-size: 1rem;
+      color: var(--text-faint);
+    }
+    .procedure-flow .flow-label {
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      background: var(--theme-faint);
+    }
+    .dv-note {
+      margin-top: 1.5rem;
+      padding: 1rem 1.2rem;
+      border-left: 3px solid var(--theme);
+      background: rgba(44, 57, 48, 0.03);
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .dv-note strong {
+      font-weight: 700;
+      color: var(--theme);
+    }
+
     @media (max-width: 600px) {
       .about-grid { grid-template-columns: 1fr; }
       .about-card.full-width { grid-column: 1; }
@@ -666,6 +757,7 @@
       .hero-nav-hint { left: 1.5rem; bottom: 2rem; }
       .page-nav { padding: 3rem 1.5rem 4rem; }
       .card-detail.open { padding: 1.5rem 1.5rem; }
+      .procedure-columns { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -819,6 +911,7 @@
             </div>
           </div>
 
+          <!-- HONOURS RESEARCH INTERN (pupillometry) -->
           <div class="research-item reveal">
             <div class="research-entry" onclick="toggleCard(this)">
               <div class="research-meta">
@@ -839,9 +932,72 @@
                 <span class="toggle-icon"></span> Details
               </div>
             </div>
-            <div class="card-detail">
+            <div class="card-detail" id="detail-pupillometry">
               <div class="card-detail-inner">
-                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the pupillometry project here.</p>
+                <p>
+                  It has been known that when one gets tired they tend to lose focus and mind-wander.
+                  The scientific way to frame this: mental resource depletion causes mind-wandering. However, it is unknown whether depleting
+                  mental resources by one module (e.g., spatial processing during a mental rotation task) causes mind-wandering in a
+                  different module (e.g., verbal processing).
+                </p>
+                <p>
+                  This study investigates this by first depleting mental resources with one task in one period,
+                  then either switching or continuing the task in subsequent periods. We aim to see whether switching vs. continuing
+                  the same/different task causes any difference in mind-wandering, operationalized by the frequency and distance
+                  of pupil position away from the task-centered location.
+                </p>
+
+                <!-- PROCEDURE SECTION -->
+                <div class="procedure-title">Procedure</div>
+
+                <!-- STEP 1: ART -->
+                <div class="procedure-step">
+                  <div class="task-header">Period 1: ART <span style="font-weight:500; color:var(--text-dim); font-size:0.68rem;">(spatial · baseline)</span></div>
+                  <div class="task-subtitle">Indicate whether the rotated letter is mirrored or normal</div>
+                  <div class="trial-demo" id="demo-art-1"></div>
+                  <div class="trial-phase-label" id="label-art-1"></div>
+                </div>
+
+                <div class="procedure-flow">
+                  <span class="flow-arrow">&#8595;</span>
+                  <span class="flow-label">Resources Depletion Phase</span>
+                  <span class="flow-arrow">&#8595;</span>
+                </div>
+
+                <!-- STEP 2: Two columns -->
+                <div class="task-header">Period 2: Switch or Continue</div>
+                <div class="procedure-columns">
+                  <div>
+                    <div class="task-header" style="font-size:0.72rem;">Dot Rotation <span style="font-weight:500; color:var(--text-dim); font-size:0.62rem;">(spatial · continue)</span></div>
+                    <div class="task-subtitle">Indicate whether the relative position of 3 dots changed after rotation</div>
+                    <div class="trial-demo" id="demo-dot"></div>
+                    <div class="trial-phase-label" id="label-dot"></div>
+                  </div>
+                  <div>
+                    <div class="task-header" style="font-size:0.72rem;">Sternberg <span style="font-weight:500; color:var(--text-dim); font-size:0.62rem;">(verbal · switch)</span></div>
+                    <div class="task-subtitle">Indicate whether the lowercase probe appeared in the memorized sequence</div>
+                    <div class="trial-demo" id="demo-stern"></div>
+                    <div class="trial-phase-label" id="label-stern"></div>
+                  </div>
+                </div>
+
+                <div class="procedure-flow">
+                  <span class="flow-arrow">&#8595;</span>
+                </div>
+
+                <!-- STEP 3: ART again -->
+                <div class="procedure-step">
+                  <div class="task-header">Period 3: ART <span style="font-weight:500; color:var(--text-dim); font-size:0.68rem;">(spatial · post-depletion)</span></div>
+                  <div class="task-subtitle">Same task as Period 1 — measure mind-wandering change</div>
+                  <div class="trial-demo" id="demo-art-3"></div>
+                  <div class="trial-phase-label" id="label-art-3"></div>
+                </div>
+
+                <div class="dv-note">
+                  <strong>Main DV:</strong> Difference in mind-wandering (pupil deviation from task center)
+                  between Period 3 and Period 1. If switching modules restores resources,
+                  the switch condition should show less mind-wandering increase than the continue condition.
+                </div>
               </div>
             </div>
           </div>
@@ -1111,12 +1267,10 @@
   /* TOGGLE LOGIC             */
   /* ======================== */
 
-  // For research entries and edu cards (detail is next sibling)
   function toggleCard(cardEl) {
     var detailEl = cardEl.nextElementSibling;
     var isOpen = detailEl.classList.contains('open');
 
-    // Close all siblings in the same list
     var parent = cardEl.closest('.research-list, .edu-list');
     if (parent) {
       parent.querySelectorAll('.card-detail.open').forEach(function(d) { d.classList.remove('open'); });
@@ -1126,15 +1280,19 @@
     if (!isOpen) {
       detailEl.classList.add('open');
       cardEl.classList.add('toggled');
+      // Start demos if this is the pupillometry card
+      if (detailEl.id === 'detail-pupillometry') {
+        setTimeout(startAllDemos, 500);
+      }
+    } else {
+      stopAllDemos();
     }
   }
 
-  // For about cards (detail panels are in a container below grid)
   function toggleAboutCard(cardEl, detailId) {
     var detailEl = document.getElementById(detailId);
     var isOpen = detailEl.classList.contains('open');
 
-    // Close all about details
     document.querySelectorAll('.about-detail-container .card-detail.open').forEach(function(d) { d.classList.remove('open'); });
     document.querySelectorAll('.about-card.toggled').forEach(function(c) { c.classList.remove('toggled'); });
 
@@ -1150,6 +1308,7 @@
   var pages = ['hero', 'about', 'research', 'motivation', 'education'];
 
   function navigateTo(pageName) {
+    stopAllDemos();
     document.querySelectorAll('.page').forEach(function(p) {
       p.classList.remove('visible');
       setTimeout(function() { p.classList.remove('active'); }, 400);
@@ -1204,6 +1363,239 @@
   window.addEventListener('scroll', function() {
     nav.classList.toggle('scrolled', window.scrollY > 50);
   });
+
+  /* ================================== */
+  /* TRIAL DEMO ANIMATION ENGINE        */
+  /* ================================== */
+
+  var demoIntervals = [];
+
+  function stopAllDemos() {
+    demoIntervals.forEach(function(id) { clearInterval(id); });
+    demoIntervals = [];
+  }
+
+  function startAllDemos() {
+    stopAllDemos();
+    period2StartTime = Date.now();
+    initArtDemo('demo-art-1', 'label-art-1');
+    initArtDemo('demo-art-3', 'label-art-3');
+    initDotDemo('demo-dot', 'label-dot');
+    initSternbergDemo('demo-stern', 'label-stern');
+  }
+
+  // Utility: get canvas context scaled for device pixel ratio
+  function setupCanvas(containerId) {
+    var container = document.getElementById(containerId);
+    if (!container) return null;
+    var canvas = container.querySelector('canvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+    }
+    var rect = container.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    return { ctx: ctx, w: rect.width, h: rect.height };
+  }
+
+  function clearCanvas(ctx, w, h) {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  function drawFixation(ctx, cx, cy, size) {
+    ctx.fillStyle = '#fff';
+    ctx.font = size + 'px Montserrat';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('+', cx, cy);
+  }
+
+  /* ---- ART DEMO ---- */
+  // Phases: fixation(1.5s) -> rotated letter(2.5s) -> blank(1s) = 5s total
+  function initArtDemo(containerId, labelId) {
+    var setup = setupCanvas(containerId);
+    if (!setup) return;
+    var ctx = setup.ctx, w = setup.w, h = setup.h;
+    var label = document.getElementById(labelId);
+    var cx = w / 2, cy = h / 2;
+    var fontSize = Math.min(w, h) * 0.22;
+    var fixSize = Math.min(w, h) * 0.18;
+
+    // Pick a stimulus: "R" rotated 150deg, mirrored
+    var stim = 'R';
+    var rotation = 150;
+
+    var phases = [
+      { dur: 1500, name: 'Fixation' },
+      { dur: 2500, name: 'Stimulus: rotated "' + stim + '" (150°, mirrored)' },
+      { dur: 1000, name: '' }
+    ];
+    var totalDur = phases.reduce(function(s, p) { return s + p.dur; }, 0);
+    var startTime = Date.now();
+
+    function render() {
+      var elapsed = (Date.now() - startTime) % totalDur;
+      var cumulative = 0;
+      var phaseIdx = 0;
+      for (var i = 0; i < phases.length; i++) {
+        if (elapsed < cumulative + phases[i].dur) { phaseIdx = i; break; }
+        cumulative += phases[i].dur;
+      }
+
+      clearCanvas(ctx, w, h);
+
+      if (phaseIdx === 0) {
+        drawFixation(ctx, cx, cy, fixSize);
+      } else if (phaseIdx === 1) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.scale(-1, 1); // mirrored
+        ctx.fillStyle = '#fff';
+        ctx.font = '600 ' + fontSize + 'px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(stim, 0, 0);
+        ctx.restore();
+      }
+      // phase 2 = blank
+
+      if (label) label.textContent = phases[phaseIdx].name;
+    }
+
+    var id = setInterval(render, 50);
+    demoIntervals.push(id);
+    render();
+  }
+
+  /* ---- SYNCED PHASE TIMING FOR PERIOD 2 ---- */
+  // Both tasks share identical phase durations so they animate in parallel
+  // Fixation(1000) -> Stimulus(1500) -> Retention(1500) -> Probe(2000) -> Gap(500) = 6500ms
+  var period2StartTime = 0;
+  var PERIOD2_PHASES = [1000, 1500, 1500, 2000, 500];
+  var PERIOD2_TOTAL = 6500;
+
+  function getPhaseIdx(startTime) {
+    var elapsed = (Date.now() - startTime) % PERIOD2_TOTAL;
+    var cumulative = 0;
+    for (var i = 0; i < PERIOD2_PHASES.length; i++) {
+      if (elapsed < cumulative + PERIOD2_PHASES[i]) return i;
+      cumulative += PERIOD2_PHASES[i];
+    }
+    return PERIOD2_PHASES.length - 1;
+  }
+
+  /* ---- DOT ROTATION DEMO ---- */
+  function initDotDemo(containerId, labelId) {
+    var setup = setupCanvas(containerId);
+    if (!setup) return;
+    var ctx = setup.ctx, w = setup.w, h = setup.h;
+    var label = document.getElementById(labelId);
+    var cx = w / 2, cy = h / 2;
+    var fixSize = Math.min(w, h) * 0.18;
+    var dotR = Math.min(w, h) * 0.04;
+    var spread = Math.min(w, h) * 0.25;
+
+    var dots = [
+      { x: -0.55 * spread, y: 0.5 * spread },
+      { x: 0.65 * spread, y: 0.6 * spread },
+      { x: 0.45 * spread, y: -0.65 * spread }
+    ];
+
+    var angle = -30 * Math.PI / 180;
+    var dotsRotated = dots.map(function(d) {
+      return {
+        x: d.x * Math.cos(angle) - d.y * Math.sin(angle),
+        y: d.x * Math.sin(angle) + d.y * Math.cos(angle)
+      };
+    });
+
+    var phaseNames = ['Fixation', 'Stimulus: 3 dots (filled)', 'Retention', 'Probe: rotated 30° (outline)', ''];
+
+    function render() {
+      var p = getPhaseIdx(period2StartTime);
+      clearCanvas(ctx, w, h);
+
+      if (p === 0) {
+        drawFixation(ctx, cx, cy, fixSize);
+      } else if (p === 1) {
+        dots.forEach(function(d) {
+          ctx.beginPath();
+          ctx.arc(cx + d.x, cy - d.y, dotR, 0, Math.PI * 2);
+          ctx.fillStyle = '#fff';
+          ctx.fill();
+        });
+        drawFixation(ctx, cx, cy, fixSize);
+      } else if (p === 2) {
+        drawFixation(ctx, cx, cy, fixSize);
+      } else if (p === 3) {
+        dotsRotated.forEach(function(d) {
+          ctx.beginPath();
+          ctx.arc(cx + d.x, cy - d.y, dotR, 0, Math.PI * 2);
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+        drawFixation(ctx, cx, cy, fixSize);
+      }
+
+      if (label) label.textContent = phaseNames[p];
+    }
+
+    var id = setInterval(render, 50);
+    demoIntervals.push(id);
+    render();
+  }
+
+  /* ---- STERNBERG DEMO ---- */
+  function initSternbergDemo(containerId, labelId) {
+    var setup = setupCanvas(containerId);
+    if (!setup) return;
+    var ctx = setup.ctx, w = setup.w, h = setup.h;
+    var label = document.getElementById(labelId);
+    var cx = w / 2, cy = h / 2;
+    var fontSize = Math.min(w, h) * 0.16;
+    var fixSize = Math.min(w, h) * 0.18;
+    var probeSize = Math.min(w, h) * 0.18;
+
+    var stimulus = 'BKH#DR';
+    var probe = 'k';
+    var phaseNames = ['Fixation', 'Stimulus: memorize the consonants', 'Retention (blank)', 'Probe: "k" in the set?', ''];
+
+    function render() {
+      var p = getPhaseIdx(period2StartTime);
+      clearCanvas(ctx, w, h);
+
+      if (p === 0) {
+        drawFixation(ctx, cx, cy, fixSize);
+      } else if (p === 1) {
+        ctx.fillStyle = '#fff';
+        ctx.font = '600 ' + fontSize + 'px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(stimulus, cx, cy);
+      } else if (p === 2) {
+        // blank retention
+      } else if (p === 3) {
+        ctx.fillStyle = '#fff';
+        ctx.font = '500 ' + probeSize + 'px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(probe, cx, cy);
+      }
+
+      if (label) label.textContent = phaseNames[p];
+    }
+
+    var id = setInterval(render, 50);
+    demoIntervals.push(id);
+    render();
+  }
 </script>
 
 </body>
