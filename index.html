@@ -1125,9 +1125,37 @@
                 <span class="toggle-icon"></span> Details
               </div>
             </div>
-            <div class="card-detail">
+            <div class="card-detail" id="detail-rpbrt">
               <div class="card-detail-inner">
-                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
+                <p>The threshold of what we call "Consciousness" has been a hot topic in cognitive neuroscience. One debate is whether <strong>Fragile Visual Short-Term Memory</strong> (fVSTM) constitutes a form of conscious perception. Professor Victor Lamme and colleagues have shown fVSTM can encode orientation — a primary visual feature. This experiment extends that paradigm to test whether <em>higher-level</em> features like color and shape are retained in fVSTM versus classic Working Memory (WM).</p>
+
+                <!-- Stimuli -->
+                <div class="procedure-title">Stimuli</div>
+                <div style="max-width:65%;margin:0 auto 1.2rem;">
+                  <div class="trial-demo" id="demo-rpbrt-legend" style="aspect-ratio:4/1;"></div>
+                  <div class="trial-phase-label">Blue Square &nbsp;·&nbsp; Green Square &nbsp;·&nbsp; Blue Circle &nbsp;·&nbsp; Green Circle</div>
+                </div>
+
+                <!-- Procedure -->
+                <div class="procedure-title">Procedure — Change Detection Task</div>
+                <div class="procedure-columns">
+                  <div>
+                    <div class="task-header">fVSTM Trial <span style="font-weight:500;color:var(--text-dim);font-size:0.68rem;">(fragile · pre-cue)</span></div>
+                    <div class="task-subtitle">Cue shown in blank interval before test display — target shape changes</div>
+                    <div class="trial-demo" id="demo-rpbrt-fvstm"></div>
+                    <div class="trial-phase-label" id="label-rpbrt-fvstm"></div>
+                  </div>
+                  <div>
+                    <div class="task-header">WM Trial <span style="font-weight:500;color:var(--text-dim);font-size:0.68rem;">(working memory · concurrent)</span></div>
+                    <div class="task-subtitle">Cue appears simultaneously with test display — target color changes</div>
+                    <div class="trial-demo" id="demo-rpbrt-wm"></div>
+                    <div class="trial-phase-label" id="label-rpbrt-wm"></div>
+                  </div>
+                </div>
+
+                <div class="dv-note">
+                  <strong>Key manipulation:</strong> In fVSTM trials the cue appears <em>before</em> the test (during the blank), allowing orientation of attention prior to the test. In WM trials the cue is <em>concurrent</em> with the test display. If fVSTM encodes color/shape, detection accuracy should be above chance in both conditions — testing whether higher-order features reach this pre-attentive memory store.
+                </div>
               </div>
             </div>
           </div>
@@ -1207,7 +1235,7 @@
             </div>
             <div class="card-detail">
               <div class="card-detail-inner">
-                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about your BSc here.</p>
+                <p class="card-detail-placeholder"> </p>
               </div>
             </div>
           </div>
@@ -1298,6 +1326,10 @@
       // Start demos if this is the pupillometry card
       if (detailEl.id === 'detail-pupillometry') {
         setTimeout(startAllDemos, 500);
+      }
+      // Start demos if this is the RP-BRT-2 card
+      if (detailEl.id === 'detail-rpbrt') {
+        setTimeout(startRpBrtDemos, 500);
       }
     } else {
       stopAllDemos();
@@ -1444,7 +1476,7 @@
     var rotation = 150;
 
     var phases = [
-      { dur: 1500, name: 'Fixation' },
+      { dur: 2000, name: 'Fixation' },
       { dur: 2500, name: 'Stimulus: rotated "' + stim + '" (150°, mirrored)' },
       { dur: 1000, name: '' }
     ];
@@ -1605,6 +1637,151 @@
     var id = setInterval(render, 50);
     demoIntervals.push(id);
     render();
+  }
+
+  /* ---- RP-BRT-2 DEMO ---- */
+  // Based on Experiment/RP_BRT-2.py
+  // 8 items in a circle, angles 45°×i, colorSpace rgb (-1 to 1):
+  //   blue = (0,0,1) → rgb(128,128,255) = #8080ff
+  //   green = (0,1,0) → rgb(128,255,128) = #80ff80
+  // fVSTM: encode(250ms) → blank(1s) → cue(500ms) → blank(500ms) → test
+  // WM:    encode(250ms) → blank(1s) → test+cue concurrent(500ms) → test
+
+  var rpbrtStartTime = 0;
+  var RPBRT_TOTAL = 4000;
+  // Colors: 0=blue, 1=green  |  Shapes: 0=square, 1=circle
+  var RPBRT_SHAPES = [0, 1, 0, 1, 1, 0, 1, 0]; // 4 sq, 4 ci; no 3 consecutive same ✓
+  var RPBRT_COLORS = [0, 1, 0, 1, 0, 1, 0, 1]; // 4 blue, 4 green; all alternating ✓
+  var RPBRT_TARGET = 2;  // index 2 = angle 90° (top) = blue square
+  // fVSTM: [encode, blank1, cue, blank2, test, gap] = 4000ms
+  var RPBRT_FVSTM_PHASES = [250, 1000, 500, 500, 1000, 750];
+  // WM:    [encode, blank, test+cue, test, gap]  = 4000ms
+  var RPBRT_WM_PHASES    = [250, 1000,  500, 1000, 1250];
+
+  function getRpBrtPhaseIdx(phases) {
+    var elapsed = (Date.now() - rpbrtStartTime) % RPBRT_TOTAL;
+    var cum = 0;
+    for (var i = 0; i < phases.length; i++) {
+      if (elapsed < cum + phases[i]) return i;
+      cum += phases[i];
+    }
+    return phases.length - 1;
+  }
+
+  function drawRpBrtItems(ctx, cx, cy, radius, itemSize, shapes, colors) {
+    var colorMap = ['#8080ff', '#80ff80'];
+    for (var i = 0; i < 8; i++) {
+      var ang = (45 * i) * Math.PI / 180;
+      var ix = cx + radius * Math.cos(ang);
+      var iy = cy - radius * Math.sin(ang); // canvas y flipped vs PsychoPy
+      ctx.fillStyle = colorMap[colors[i]];
+      if (shapes[i] === 0) {
+        var half = itemSize / 2;
+        ctx.fillRect(ix - half, iy - half, itemSize, itemSize);
+      } else {
+        ctx.beginPath();
+        ctx.arc(ix, iy, Math.sqrt(itemSize * itemSize / Math.PI), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function drawRpBrtCue(ctx, cx, cy, radius, targetIdx) {
+    var ang = (45 * targetIdx) * Math.PI / 180;
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = Math.max(1.5, radius * 0.018);
+    ctx.beginPath();
+    ctx.moveTo(cx + 0.1 * radius * Math.cos(ang), cy - 0.1 * radius * Math.sin(ang));
+    ctx.lineTo(cx + 0.8 * radius * Math.cos(ang), cy - 0.8 * radius * Math.sin(ang));
+    ctx.stroke();
+  }
+
+  function drawRpBrtFix(ctx, cx, cy, r) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function initRpBrtDemo(containerId, labelId, type) {
+    var setup = setupCanvas(containerId);
+    if (!setup) return;
+    var ctx = setup.ctx, w = setup.w, h = setup.h;
+    var label = document.getElementById(labelId);
+    var cx = w / 2, cy = h / 2;
+    var radius   = Math.min(w, h) * 0.35;
+    var itemSize = Math.min(w, h) * 0.13;
+    var fixR     = Math.min(w, h) * 0.018;
+
+    // fVSTM: target (blue sq) changes shape → blue circle
+    var shapesChanged = RPBRT_SHAPES.slice();
+    shapesChanged[RPBRT_TARGET] = 1 - shapesChanged[RPBRT_TARGET];
+
+    // WM: target (blue sq) changes color → green square
+    var colorsChanged = RPBRT_COLORS.slice();
+    colorsChanged[RPBRT_TARGET] = 1 - colorsChanged[RPBRT_TARGET];
+
+    var phases = type === 'fVSTM' ? RPBRT_FVSTM_PHASES : RPBRT_WM_PHASES;
+    var names  = type === 'fVSTM'
+      ? ['Encoding (250ms)', 'Blank (1s)', 'Cue (500ms)', 'Pre-test blank', 'Test — shape changed', '']
+      : ['Encoding (250ms)', 'Blank (1s)', 'Test + Cue concurrent (500ms)', 'Test — color changed', ''];
+
+    function render() {
+      var p = getRpBrtPhaseIdx(phases);
+      clearCanvas(ctx, w, h);
+      if (type === 'fVSTM') {
+        if (p === 0) { drawRpBrtItems(ctx, cx, cy, radius, itemSize, RPBRT_SHAPES, RPBRT_COLORS); drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 1) { drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 2) { drawRpBrtCue(ctx, cx, cy, radius, RPBRT_TARGET); drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 3) { drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 4) { drawRpBrtItems(ctx, cx, cy, radius, itemSize, shapesChanged, RPBRT_COLORS); drawRpBrtFix(ctx, cx, cy, fixR); }
+        // p===5: blank gap
+      } else {
+        if (p === 0) { drawRpBrtItems(ctx, cx, cy, radius, itemSize, RPBRT_SHAPES, RPBRT_COLORS); drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 1) { drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 2) { drawRpBrtItems(ctx, cx, cy, radius, itemSize, RPBRT_SHAPES, colorsChanged); drawRpBrtCue(ctx, cx, cy, radius, RPBRT_TARGET); drawRpBrtFix(ctx, cx, cy, fixR); }
+        else if (p === 3) { drawRpBrtItems(ctx, cx, cy, radius, itemSize, RPBRT_SHAPES, colorsChanged); drawRpBrtFix(ctx, cx, cy, fixR); }
+        // p===4: blank gap
+      }
+      if (label) label.textContent = names[p];
+    }
+
+    var id = setInterval(render, 50);
+    demoIntervals.push(id);
+    render();
+  }
+
+  function initRpBrtLegend(containerId) {
+    var setup = setupCanvas(containerId);
+    if (!setup) return;
+    var ctx = setup.ctx, w = setup.w, h = setup.h;
+    clearCanvas(ctx, w, h);
+    var items = [
+      { shape: 0, color: '#8080ff' }, // blue square
+      { shape: 0, color: '#80ff80' }, // green square
+      { shape: 1, color: '#8080ff' }, // blue circle
+      { shape: 1, color: '#80ff80' }  // green circle
+    ];
+    var cellW = w / 4;
+    var size  = Math.min(cellW * 0.45, h * 0.55);
+    items.forEach(function(item, i) {
+      var ix = cellW * (i + 0.5), iy = h / 2;
+      ctx.fillStyle = item.color;
+      if (item.shape === 0) {
+        ctx.fillRect(ix - size / 2, iy - size / 2, size, size);
+      } else {
+        ctx.beginPath();
+        ctx.arc(ix, iy, Math.sqrt(size * size / Math.PI), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+  }
+
+  function startRpBrtDemos() {
+    rpbrtStartTime = Date.now();
+    initRpBrtDemo('demo-rpbrt-fvstm', 'label-rpbrt-fvstm', 'fVSTM');
+    initRpBrtDemo('demo-rpbrt-wm',    'label-rpbrt-wm',    'WM');
+    initRpBrtLegend('demo-rpbrt-legend');
   }
 </script>
 
