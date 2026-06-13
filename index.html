@@ -807,17 +807,7 @@
         <div class="about-intro reveal"></div>
 
         <div class="about-grid reveal">
-          <div class="about-card" onclick="toggleAboutCard(this, 'about-detail-love')">
-            <div class="about-card-label">Love</div>
-            <div class="about-card-text">
-              Being with my lovely gf (stbw) since secondary school for 6 years. Love you bếp.
-            </div>
-            <div class="card-toggle-indicator">
-              <span class="toggle-icon"></span> Details
-            </div>
-          </div>
-
-          <div class="about-card" onclick="toggleAboutCard(this, 'about-detail-interests')">
+          <div class="about-card full-width" onclick="toggleAboutCard(this, 'about-detail-interests')">
             <div class="about-card-label">Interests</div>
             <div class="about-card-text">
               I love Messi, Sherlock Holmes, L Lawliet, and anyone whose intellectual genius is their whole personality.
@@ -831,11 +821,6 @@
 
         <!-- Detail panels for about cards (below grid) -->
         <div class="about-detail-container reveal">
-          <div class="card-detail" id="about-detail-love">
-            <div class="card-detail-inner">
-              <p class="card-detail-placeholder">Add your figures or thoughts here.</p>
-            </div>
-          </div>
           <div class="card-detail" id="about-detail-interests">
             <div class="card-detail-inner">
               <p class="card-detail-placeholder">Add your figures or thoughts here.</p>
@@ -1098,7 +1083,7 @@
                 <span class="toggle-icon"></span> Details
               </div>
             </div>
-            <div class="card-detail">
+            <div class="card-detail" id="detail-rpbrt">
               <div class="card-detail-inner">
                 <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts here.</p>
               </div>
