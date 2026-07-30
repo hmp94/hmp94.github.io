@@ -270,6 +270,7 @@
       border-left: 3px solid transparent;
       background: var(--theme-faint);
     }
+    .card-detail.long.open { max-height: 14000px; }
     .card-detail.open {
       max-height: 4000px;
       opacity: 1;
@@ -744,8 +745,92 @@
       color: var(--theme);
     }
 
+    /* ========================= */
+    /* RESEARCH MEDIA & FIGURES  */
+    /* ========================= */
+    .media-block {
+      margin: 0.8rem 0 0.5rem;
+    }
+    .media-block.narrow {
+      max-width: 46%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .media-block.half {
+      max-width: 72%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .media-block video,
+    .media-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: #000;
+    }
+    .media-block img { background: #FFFFFF; }
+    .media-block a {
+      display: block;
+      border-bottom: none;
+      line-height: 0;
+    }
+    .media-caption {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 1.6rem;
+    }
+    .media-caption strong {
+      font-weight: 700;
+      color: var(--theme);
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 0.6rem;
+      font-size: 0.78rem;
+    }
+    .result-table th,
+    .result-table td {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    .result-table thead th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .result-table tbody td:first-child { font-weight: 600; }
+    .result-table .num { font-variant-numeric: tabular-nums; }
+    .result-table .miss { color: #b23b3b; font-weight: 700; }
+    .card-detail-inner a {
+      color: var(--theme);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-hover);
+      transition: border-color 0.2s;
+    }
+    .card-detail-inner a:hover { border-bottom-color: var(--theme); }
+    .repo-link {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
     @media (max-width: 600px) {
       .about-grid { grid-template-columns: 1fr; }
+      .media-block.narrow,
+      .media-block.half { max-width: 100%; }
+      .result-table { font-size: 0.7rem; }
       .about-card.full-width { grid-column: 1; }
       .nav-links { display: none; }
       .edu-card { grid-template-columns: 1fr; }
@@ -870,20 +955,130 @@
               <div class="research-place">Donders Institute for Brain, Cognition and Behaviour · Radboud University, Nijmegen</div>
               <div class="research-desc">
                 Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
-                Investigating how functional hippocampal cells support schema learning.
+                Investigating how functional hippocampal cells support schema learning, and testing whether
+                <strong>left–right alternating theta sweeps</strong> reproduce in our hippocampal Neuropixels recordings.
               </div>
               <div class="research-tags">
                 <span class="r-tag">Hex Maze</span>
+                <span class="r-tag">Theta Sweeps</span>
+                <span class="r-tag">Neuropixels</span>
+                <span class="r-tag">Bayesian Decoding</span>
                 <span class="r-tag">Spatial Navigation</span>
-                <span class="r-tag">Rodent Electrophysiology</span>
               </div>
               <div class="card-toggle-indicator">
                 <span class="toggle-icon"></span> Details
               </div>
             </div>
-            <div class="card-detail">
+            <div class="card-detail long" id="detail-sweeps">
               <div class="card-detail-inner">
-                <p class="card-detail-placeholder">Add your detailed description, figures, or thoughts about the Donders internship here.</p>
+                <p>
+                  Every time a rat runs, its hippocampus does not simply report where the animal <em>is</em>.
+                  Within each ~125 ms theta cycle the decoded position shoots ahead of the animal and comes back —
+                  a <strong>theta sweep</strong>. Vollan, Gardner, Moser &amp; Moser
+                  (<em>Nature</em>, 2025) reported that in entorhinal–hippocampal maps these sweeps alternate
+                  <strong>left, right, left</strong> across consecutive cycles, as if the animal were sampling
+                  both branches of the path ahead. My project reimplements their pipeline in Python and asks whether
+                  that alternation is present in our own dataset: ten sessions of hippocampal Neuropixels recordings
+                  from two rats foraging in a 9 × 5 m hex maze.
+                </p>
+
+                <div class="procedure-title">What a sweep looks like in our data</div>
+                <div class="media-block narrow">
+                  <video src="Media/theta-sweeps/alternation_triplets.mp4" width="632" height="672"
+                         poster="Media/theta-sweeps/alternation_triplets_poster.jpg"
+                         controls loop muted playsinline preload="none"></video>
+                </div>
+                <div class="media-caption">
+                  <strong>Figure 1.</strong> Decoded position overlaid on the maze camera (Rat 6, session 5).
+                  The white circle is the animal; the cyan-to-magenta trail is the position decoded from
+                  the population, cycle by cycle, labelled by the side it departs to. These are the only
+                  2 of 15 adjacent-cycle triplets in the session that alternate L → R → L — and even that
+                  count is a loose one, since it still includes backward sweeps.
+                </div>
+
+                <div class="media-block">
+                  <a href="Media/theta-sweeps/triplets_alternating_unfolded.png" target="_blank" rel="noopener" title="Open full size"><img loading="lazy" width="1785" height="508" src="Media/theta-sweeps/triplets_alternating_unfolded.png"
+                       alt="Two alternating sweep triplets drawn in maze coordinates"></a>
+                </div>
+                <div class="media-caption">
+                  <strong>Figure 2.</strong> The same two triplets in maze coordinates. Maze in pale grey,
+                  the animal's path in dark grey, the rat drawn at its heading; the open circle is the anchor
+                  each sweep departs from. Blue sweeps go left, red go right.
+                </div>
+
+                <div class="procedure-title">Two things the sweeps should do, and one they don't</div>
+                <div class="media-block half">
+                  <a href="Media/theta-sweeps/sweep_directions_rose.png" target="_blank" rel="noopener" title="Open full size"><img loading="lazy" width="1472" height="1248" src="Media/theta-sweeps/sweep_directions_rose.png"
+                       alt="Rose plot of head-centred sweep direction, near-uniform"></a>
+                </div>
+                <div class="media-caption">
+                  <strong>Figure 3.</strong> Where the sweeps point, measured against the animal's own heading
+                  rather than the maze. Requiring sweeps to run forward — as a real theta sweep must —
+                  removes what little alternation the analysis does find.
+                </div>
+
+                <div class="media-block">
+                  <a href="Media/theta-sweeps/tang_10sessions.png" target="_blank" rel="noopener" title="Open full size"><img loading="lazy" width="2125" height="951" src="Media/theta-sweeps/tang_10sessions.png"
+                       alt="Sweep prevalence and left-right alternation across ten sessions"></a>
+                </div>
+                <div class="media-caption">
+                  <strong>Figure 4.</strong> Every session, under a Bayesian decoder with 50 ms spike smoothing.
+                  The split is the whole result: the sweep-like events are real structure, the left–right
+                  alternation the paper reports is not.
+                </div>
+
+                <div class="procedure-title">Result</div>
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>This dataset</th>
+                      <th>Vollan et al. (2025)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Cells per session</td>
+                      <td class="num">42–83 good pyramidal</td>
+                      <td class="num">769 mean (384–1,522)</td>
+                    </tr>
+                    <tr>
+                      <td>Sweep prevalence</td>
+                      <td class="num">0.01–0.05</td>
+                      <td class="num">0.48</td>
+                    </tr>
+                    <tr>
+                      <td>Left–right alternation</td>
+                      <td class="num miss">0 / 10 sessions clear the shuffle</td>
+                      <td class="num">79.8 % vs 61.1 % shuffled</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="dv-note">
+                  <strong>Why it fails, as far as I can tell:</strong> at 10 ms — the timescale a sweep needs —
+                  the population carries no decodable position at all. A cross-validated decoder sits at chance
+                  (253 cm error against a 252 cm null that just predicts the training centroid), and 19–52 % of
+                  running 10 ms bins contain zero spikes from every recorded cell. That is a vector no method can
+                  place in the maze. The paper's effect rests on very large MEC and parasubiculum ensembles;
+                  this is a single hippocampal probe in a ~40 m² maze. Speed gating, theta phase from LFP versus
+                  spiking, state-space size, cross-validated rate-map smoothing, head direction from DLC, and a
+                  genuine LFP timestamp bug in 6 of 10 files were each ruled out with their own decisive number.
+                </div>
+
+                <p style="margin-top:1.5rem;">
+                  What does work without a decoder is <strong>vicarious trial and error</strong>: scoring the
+                  back-and-forth head movements at the maze's 49 junctions from tracking alone gives 2,710
+                  choice-point passes, and high-zIdPhi passes travel the same net distance across a junction
+                  over a path half again as long, at half the speed, with 1.64× the tortuosity (p = 8 × 10⁻⁹⁰).
+                  That deliberation signature declines with trial number in all ten sessions.
+                </p>
+
+                <div class="repo-link">
+                  Code, full write-up and every rescue attempted:
+                  <a href="https://github.com/hmp94/Reproduce-Theta-Sweeps-from-HexMaze-dataset" target="_blank" rel="noopener">
+                    github.com/hmp94/Reproduce-Theta-Sweeps-from-HexMaze-dataset</a>
+                </div>
               </div>
             </div>
           </div>
@@ -1295,9 +1490,22 @@
   /* TOGGLE LOGIC             */
   /* ======================== */
 
+  function pauseAllCardVideos() {
+    document.querySelectorAll('.card-detail video').forEach(function(v) { v.pause(); });
+  }
+
+  function playCardVideos(detailEl) {
+    detailEl.querySelectorAll('video').forEach(function(v) {
+      var attempt = v.play();
+      if (attempt && attempt.catch) attempt.catch(function() { /* autoplay blocked — controls remain */ });
+    });
+  }
+
   function toggleCard(cardEl) {
     var detailEl = cardEl.nextElementSibling;
     var isOpen = detailEl.classList.contains('open');
+
+    pauseAllCardVideos();
 
     var parent = cardEl.closest('.research-list, .edu-list');
     if (parent) {
@@ -1315,6 +1523,10 @@
       // Start demos if this is the RP-BRT-2 card
       if (detailEl.id === 'detail-rpbrt') {
         setTimeout(startRpBrtDemos, 500);
+      }
+      // Start the theta-sweep clip once the panel has finished expanding
+      if (detailEl.id === 'detail-sweeps') {
+        setTimeout(function() { playCardVideos(detailEl); }, 500);
       }
     } else {
       stopAllDemos();
@@ -1341,6 +1553,7 @@
 
   function navigateTo(pageName) {
     stopAllDemos();
+    pauseAllCardVideos();
     document.querySelectorAll('.page').forEach(function(p) {
       p.classList.remove('visible');
       setTimeout(function() { p.classList.remove('active'); }, 400);
