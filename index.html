@@ -1014,7 +1014,7 @@
               <div class="research-desc">
                 Working with Dr. Sachuriga on <strong>rodent spatial navigation</strong> using the Hex Maze paradigm.
                 Investigating how functional hippocampal cells support schema learning, and testing whether
-                <strong>left–right alternating theta sweeps</strong> reproduce in our hippocampal Neuropixels recordings.
+                <strong>left–right alternating theta sweeps</strong> reproduce in our CA1 Neuropixels recordings.
               </div>
               <div class="research-tags">
                 <span class="r-tag">Hex Maze</span>
@@ -1030,35 +1030,265 @@
             <div class="card-detail long" id="detail-sweeps">
               <div class="card-detail-inner">
                 <p>
-                  The hippocampal formation carries a map of self-location, and during running that map is
-                  not still. Position decoded from entorhinal and hippocampal populations does not sit on the
-                  animal: within each theta cycle it runs out ahead along the direction of travel and comes
-                  back — a <strong>theta sweep</strong>. What Vollan, Gardner, Moser &amp; Moser added in
-                  <em>Nature</em> in 2025, recording medial entorhinal cortex and parasubiculum with
-                  Neuropixels probes, is that consecutive sweeps do not all go the same way. They
-                  <strong>alternate</strong>: a sweep to the left of the animal's path is followed by one to
-                  the right, then left again. Across triplets of adjacent cycles the side flipped 79.8 % of
-                  the time against 61.1 % in shuffled data, and about half of all running theta cycles
-                  carried a sweep at all. Their reading is that the map cycles through the branches of the
-                  space ahead — sampling the alternatives rather than committing to one.
+                  During running, position decoded from entorhinal and hippocampal populations does not sit
+                  on the animal: within each theta cycle it runs ahead along the direction of travel and
+                  returns — a <strong>theta sweep</strong>. Recording medial entorhinal cortex and
+                  parasubiculum with Neuropixels probes, Vollan, Gardner, Moser &amp; Moser
+                  (<em>Nature</em>, 2025) reported that consecutive sweeps <strong>alternate side</strong>:
+                  left of the path, then right, then left. The side flipped in 79.8 % of adjacent-cycle
+                  triplets against 61.1 % in shuffled data, and roughly half of running theta cycles carried
+                  a sweep. Their hypothesis is functional — that the alternation lets the map cover both
+                  sides of the path ahead within successive cycles.
                 </p>
                 <div class="procedure-title">Why ask it of this dataset</div>
                 <p>
-                  Our recordings are hippocampal, and the animals run a 9 × 5 m hex maze — a lattice with 49
-                  junctions, where rats make repeated goal-directed trips and the layout has to be learned as
-                  a schema. That makes alternating sweeps more than a curiosity here. At every hexagon the
-                  animal has two ways to go, so a map that samples both branches before the choice is exactly
-                  the kind of mechanism a learned schema could use to guide the next step. And it is a strong
-                  test of the original result: does an entorhinal phenomenon still show up one synapse
-                  downstream, in an environment with far more branch points than a linear track?
+                  Our recordings are CA1, and the animals run the 9 × 5 m HexMaze: 40 cm corridor segments
+                  meeting at 49 choice points, with a fixed goal and varying start positions, so the layout
+                  has to be learned as a schema.
+                </p>
+                <div class="method-figure wide" style="max-width:860px">
+                    <svg viewBox="80 35 1107 682" role="img" aria-label="Layout of the 9 by 5 m hex maze, drawn from the session node list">
+                    <style>text{font-family:inherit}.lbl{font-size:19px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;fill:rgba(44,57,48,0.34)}.tiny{font-size:18px;font-weight:600;fill:rgba(44,57,48,0.42)}</style>
+                    <line x1="1133" y1="109" x2="1158" y2="165" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1133" y1="109" x2="1077" y2="109" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1158" y1="165" x2="1137" y2="208" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1137" y1="208" x2="1159" y2="251" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1137" y1="208" x2="1076" y2="207" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1159" y1="251" x2="1132" y2="297" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1132" y1="297" x2="1077" y2="299" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1051" y1="63" x2="1077" y2="109" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1051" y1="63" x2="993" y2="64" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1077" y1="109" x2="1046" y2="156" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1046" y1="156" x2="1076" y2="207" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1046" y1="156" x2="997" y2="155" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1076" y1="207" x2="1051" y2="255" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1051" y1="255" x2="1077" y2="299" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1051" y1="255" x2="997" y2="255" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1077" y1="299" x2="1054" y2="342" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="1054" y1="342" x2="998" y2="346" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="993" y1="64" x2="970" y2="119" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="970" y1="119" x2="997" y2="155" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="970" y1="119" x2="917" y2="121" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="997" y1="155" x2="969" y2="211" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="969" y1="211" x2="997" y2="255" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="969" y1="211" x2="919" y2="214" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="997" y1="255" x2="974" y2="304" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="974" y1="304" x2="998" y2="346" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="974" y1="304" x2="912" y2="304" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="917" y1="121" x2="891" y2="163" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="891" y1="163" x2="919" y2="214" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="919" y1="214" x2="891" y2="265" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="891" y1="265" x2="912" y2="304" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="860" y1="383" x2="884" y2="430" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="860" y1="383" x2="807" y2="389" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="884" y1="430" x2="859" y2="478" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="859" y1="478" x2="886" y2="528" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="859" y1="478" x2="805" y2="478" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="886" y1="528" x2="855" y2="578" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="855" y1="578" x2="798" y2="574" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="786" y1="345" x2="807" y2="389" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="786" y1="345" x2="733" y2="341" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="807" y1="389" x2="775" y2="437" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="775" y1="437" x2="805" y2="478" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="775" y1="437" x2="736" y2="434" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="805" y1="478" x2="780" y2="532" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="780" y1="532" x2="798" y2="574" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="780" y1="532" x2="738" y2="528" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="798" y1="574" x2="779" y2="619" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="779" y1="619" x2="730" y2="623" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="733" y1="341" x2="707" y2="389" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="707" y1="389" x2="736" y2="434" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="707" y1="389" x2="655" y2="385" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="736" y1="434" x2="707" y2="483" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="707" y1="483" x2="738" y2="528" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="707" y1="483" x2="647" y2="477" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="738" y1="528" x2="710" y2="580" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="710" y1="580" x2="730" y2="623" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="655" y1="385" x2="625" y2="431" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="625" y1="431" x2="647" y2="477" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="647" y1="477" x2="612" y2="529" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="612" y1="529" x2="643" y2="575" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="602" y1="119" x2="631" y2="162" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="602" y1="119" x2="556" y2="120" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="631" y1="162" x2="605" y2="213" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="605" y1="213" x2="632" y2="260" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="605" y1="213" x2="559" y2="214" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="632" y1="260" x2="605" y2="303" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="605" y1="303" x2="552" y2="304" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="527" y1="73" x2="556" y2="120" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="527" y1="73" x2="476" y2="73" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="556" y1="120" x2="533" y2="163" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="533" y1="163" x2="559" y2="214" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="533" y1="163" x2="475" y2="161" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="559" y1="214" x2="528" y2="264" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="528" y1="264" x2="552" y2="304" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="528" y1="264" x2="471" y2="261" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="552" y1="304" x2="527" y2="345" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="527" y1="345" x2="473" y2="345" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="476" y1="73" x2="451" y2="116" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="451" y1="116" x2="475" y2="161" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="451" y1="116" x2="397" y2="120" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="475" y1="161" x2="442" y2="213" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="442" y1="213" x2="471" y2="261" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="442" y1="213" x2="392" y2="211" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="471" y1="261" x2="447" y2="303" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="447" y1="303" x2="473" y2="345" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="447" y1="303" x2="390" y2="301" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="397" y1="120" x2="370" y2="162" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="370" y1="162" x2="392" y2="211" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="392" y1="211" x2="367" y2="256" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="367" y1="256" x2="390" y2="301" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="346" y1="388" x2="372" y2="436" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="346" y1="388" x2="287" y2="387" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="372" y1="436" x2="350" y2="476" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="350" y1="476" x2="369" y2="525" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="350" y1="476" x2="289" y2="475" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="369" y1="525" x2="344" y2="575" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="344" y1="575" x2="289" y2="580" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="263" y1="337" x2="287" y2="387" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="263" y1="337" x2="211" y2="339" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="287" y1="387" x2="264" y2="428" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="264" y1="428" x2="289" y2="475" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="264" y1="428" x2="212" y2="427" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="289" y1="475" x2="260" y2="526" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="260" y1="526" x2="289" y2="580" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="260" y1="526" x2="206" y2="529" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="289" y1="580" x2="266" y2="616" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="266" y1="616" x2="213" y2="615" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="211" y1="339" x2="186" y2="385" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="186" y1="385" x2="212" y2="427" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="186" y1="385" x2="135" y2="383" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="212" y1="427" x2="184" y2="473" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="184" y1="473" x2="206" y2="529" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="184" y1="473" x2="134" y2="473" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="206" y1="529" x2="183" y2="572" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="183" y1="572" x2="213" y2="615" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="183" y1="572" x2="135" y2="575" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="135" y1="383" x2="108" y2="423" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="108" y1="423" x2="134" y2="473" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="134" y1="473" x2="109" y2="523" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="109" y1="523" x2="135" y2="575" stroke="#2C3930" stroke-opacity="0.30" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="1133" cy="109" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="1158" cy="165" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="1137" cy="208" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1159" cy="251" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="1132" cy="297" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="1051" cy="63" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="1077" cy="109" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1046" cy="156" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1076" cy="207" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1051" cy="255" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1077" cy="299" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="1054" cy="342" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="993" cy="64" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="970" cy="119" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="997" cy="155" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="969" cy="211" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="997" cy="255" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="974" cy="304" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="998" cy="346" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="917" cy="121" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="891" cy="163" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="919" cy="214" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="891" cy="265" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="912" cy="304" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="860" cy="383" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="884" cy="430" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="859" cy="478" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="886" cy="528" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="855" cy="578" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="786" cy="345" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="807" cy="389" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="775" cy="437" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="805" cy="478" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="780" cy="532" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="798" cy="574" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="779" cy="619" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="733" cy="341" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="707" cy="389" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="736" cy="434" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="707" cy="483" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="738" cy="528" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="710" cy="580" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="730" cy="623" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="655" cy="385" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="625" cy="431" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="647" cy="477" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="612" cy="529" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="643" cy="575" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="602" cy="119" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="631" cy="162" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="605" cy="213" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="632" cy="260" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="605" cy="303" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="527" cy="73" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="556" cy="120" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="533" cy="163" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="559" cy="214" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="528" cy="264" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="552" cy="304" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="527" cy="345" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="476" cy="73" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="451" cy="116" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="475" cy="161" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="442" cy="213" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="471" cy="261" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="447" cy="303" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="473" cy="345" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="397" cy="120" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="370" cy="162" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="392" cy="211" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="367" cy="256" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="390" cy="301" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="346" cy="388" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="372" cy="436" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="350" cy="476" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="369" cy="525" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="344" cy="575" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="263" cy="337" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="287" cy="387" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="264" cy="428" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="289" cy="475" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="260" cy="526" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="289" cy="580" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="266" cy="616" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="211" cy="339" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="186" cy="385" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="212" cy="427" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="184" cy="473" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="206" cy="529" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="183" cy="572" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="213" cy="615" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="135" cy="383" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="108" cy="423" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="134" cy="473" r="7" fill="#2C3930" fill-opacity="0.85"/>
+                    <circle cx="109" cy="523" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <circle cx="135" cy="575" r="4" fill="#2C3930" fill-opacity="0.28"/>
+                    <line x1="104" y1="685" x2="228" y2="685" stroke="#2C3930" stroke-width="5"/>
+                    <text x="240" y="692" class="tiny">1 m</text>
+                    <text x="1187" y="692" class="tiny" text-anchor="end">filled dots = the 49 choice points</text>
+                    <text x="82" y="53" class="lbl">hex maze · 40 cm between nodes</text>
+                    </svg>
+                  </div>
+                <div class="media-caption">
+                  The maze drawn from the session's own node list. Each segment is 40 cm; filled dots mark
+                  the choice points. The long corridors joining the four clusters are absent from that file,
+                  so they are missing here — the animal does cross between clusters.
+                </div>
+                <p>
+                  Alternating sweeps would matter in this environment. At every choice point the animal has
+                  two ways forward, so a map that covers both before the turn is a candidate substrate for
+                  schema-guided choice. The reproduction also tests the original result where it is weakest:
+                  one synapse downstream of entorhinal cortex, in an environment with far more branch points
+                  than a linear track.
                 </p>
                 <div class="procedure-title">What is different here</div>
                 <ul class="diff-list">
-                  <li><strong>Region and ensemble size</strong> — they recorded medial entorhinal cortex and parasubiculum and decoded 769 cells per session on average, up to 1,522. This is a single hippocampal probe: 42–83 well-isolated pyramidal cells per session, roughly sixteen times smaller.</li>
-                  <li><strong>Where theta phase comes from</strong> — the paper takes phase from a principal component of the population's own spiking. On populations this small that fails outright — it recovers about 0.9 Hz, well out of band — so phase is taken from the LFP instead, which gives 7.9 Hz.</li>
-                  <li><strong>Scale of the environment</strong> — a 9 × 5 m hex maze is not a 1.5 m arena, so the spatial bins are 5 cm rather than 2.5 cm, smoothing is 7.5 cm, and the decodable region is the visited path dilated by 22.5 cm so that a sweep is able to leave the path at all.</li>
-                  <li><strong>Which decoder</strong> — their released MATLAB scores positions by population-vector correlation, while their Methods text describes Bayesian reconstruction. Everything here is the Bayesian version, with spike counts smoothed to about 50 ms.</li>
-                  <li><strong>Nothing added on top</strong> — head direction comes from travel, since the DLC keypoints in these files are unusable. Gates that would reject backward sweeps or sweeps starting far from the animal are implemented but left off, so sweeps are counted the way the paper counts them.</li>
+                  <li><strong>Region and ensemble size</strong> — MEC and parasubiculum, 769 cells per session on average and up to 1,522. Here, one CA1 probe: 42–83 well-isolated pyramidal cells per session, roughly sixteen times fewer.</li>
+                  <li><strong>Where theta phase comes from</strong> — the paper derives phase from a principal component of population spiking. At this population size that fails outright — it recovers about 0.9 Hz, well out of band — so phase is taken from the LFP, which gives 7.9 Hz.</li>
+                  <li><strong>Scale of the environment</strong> — a 9 × 5 m maze is not a 1.5 m arena. Spatial bins are 5 cm rather than 2.5 cm, smoothing is 7.5 cm, and the decodable region is the visited path dilated by 22.5 cm so that a sweep is able to leave it.</li>
+                  <li><strong>Which decoder</strong> — the released MATLAB scores positions by population-vector correlation, while the Methods text describes Bayesian reconstruction. Everything here is the Bayesian version, with spike counts smoothed to about 50 ms.</li>
+                  <li><strong>Nothing added on top</strong> — head direction comes from travel, since the DLC keypoints in these files are unusable. Gates that would reject backward sweeps, or sweeps starting far from the animal, are implemented but left off.</li>
                 </ul>
                 <div class="procedure-title">How the pipeline works, step by step</div>
                 <div class="method-list">
@@ -1066,8 +1296,8 @@
                     <div class="method-num">1</div>
                     <div>
                       <div class="method-head">Cut the recording into theta cycles</div>
-                      <p>A sweep is defined inside one theta cycle, so the first job is to say where each cycle begins. The LFP is band-passed to 5–10 Hz and Hilbert-transformed for an instantaneous phase, which is then re-zeroed to the theta trough — the point in the cycle where the population fires least — and a cycle starts at every upward crossing. Cycles outside 0.08–0.22 s are discarded.</p>
-                      <p>Spikes and tracking are binned at 10 ms on the same grid, because that is the resolution a sweep needs: a whole sweep out and back happens inside roughly 125 ms.</p>
+                      <p>A sweep is defined within a single theta cycle. The LFP is band-passed to 5–10 Hz and Hilbert-transformed for an instantaneous phase, re-zeroed to the theta trough — the point at which the population fires least — and a cycle begins at each upward crossing. Cycles outside 0.08–0.22 s are discarded.</p>
+                      <p>Spikes and tracking are binned at 10 ms, the resolution a sweep requires: one sweep out and back occupies roughly 125 ms.</p>
                       <div class="method-figure wide" style="max-width:934px">
                     <svg viewBox="0 0 900 150" role="img" aria-label="Theta cycles cut from the band-passed LFP">
                     <defs>
@@ -1213,7 +1443,7 @@
                     <div class="method-num">2</div>
                     <div>
                       <div class="method-head">Learn where each cell fires</div>
-                      <p>The decoder needs a template to match spikes against. Using only bins where the animal was running above 5 cm/s, the maze is tiled into squares, and each cell's spike count and the time spent are accumulated per square, smoothed, and divided — giving firing rate in Hz per cell per square. Squares the animal visited for under 0.25 s are dropped.</p>
+                      <p>The decoder needs a template. Using only bins in which the animal ran above 5 cm/s, spike counts and dwell time are accumulated per 5 cm square, smoothed, and divided, giving firing rate per cell per square. Squares occupied for less than 0.25 s are dropped.</p>
                       <div class="method-figure wide" style="max-width:854px">
                     <svg viewBox="0 0 820 172" role="img" aria-label="Building one place-rate map per cell">
                     <defs>
@@ -1285,11 +1515,11 @@
                   <div class="method-step">
                     <div class="method-num">3</div>
                     <div>
-                      <div class="method-head">Ask the population where the animal is — Bayesian decoding</div>
-                      <p>This is the step everything else rests on. For a single 10 ms bin we have a vector of spike counts, one per cell, and we want a probability for every position in the maze. Under a Poisson spiking assumption each cell contributes independently, so the log-posterior is a sum over cells:</p>
+                      <div class="method-head">Decode position from the population</div>
+                      <p>For one 10 ms bin we hold a spike count per cell and want a probability for every position in the maze. Under a Poisson assumption cells contribute independently, so the log-posterior is a sum over cells:</p>
                       <div class="eq">log P(x | n) &nbsp;=&nbsp; Σ<sub>i</sub> n<sub>i</sub> log f<sub>i</sub>(x) &nbsp;−&nbsp; τ Σ<sub>i</sub> f<sub>i</sub>(x) &nbsp;+&nbsp; log P(x)</div>
-                      <p>Read it as voting. The first term rewards positions where the cells that <em>did</em> spike have high rates — a cell that fired twice pushes probability onto its own field. The second term punishes positions where cells that stayed <em>silent</em> would have been expected to fire, which is what makes silence informative. The prior is flat, so nothing but the spikes decides.</p>
-                      <p>That leaves a probability surface over the maze, and it has to be reduced to one point. The authors' released code does not take the single best bin; it takes a weighted centroid of the top 1 % of the posterior within 10 cm, and this port follows the code. A bin is only trusted if its peak beats a 99th-percentile spike-shuffle and at least one cell was active.</p>
+                      <p>The first term rewards positions where the cells that fired have high rates. The second penalises positions where silent cells would have been expected to fire, which is what makes silence informative. The prior is flat.</p>
+                      <p>The surface is then reduced to a single point — not its maximum, but a weighted centroid of the top 1 % of the posterior within 10 cm, following the authors' released code. A bin is used only if its peak beats a 99th-percentile spike-shuffle and at least one cell was active.</p>
                       <div class="method-figure wide" style="max-width:934px">
                     <svg viewBox="0 0 900 232" role="img" aria-label="Poisson Bayesian decoding of one 10 ms bin">
                     <defs>
@@ -1352,7 +1582,7 @@
                     <rect x="142" y="152" width="66" height="34" rx="3" fill="#fff" stroke="rgba(44,57,48,0.18)" stroke-width="1"/>
                     <g clip-path="url(#bt3)"><polygon points="142.1,128.0 142.1,140.0 131.7,146.0 121.3,140.0 121.3,128.0 131.7,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="162.8,128.0 162.8,140.0 152.4,146.0 142.0,140.0 142.0,128.0 152.4,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="183.6,128.0 183.6,140.0 173.2,146.0 162.8,140.0 162.8,128.0 173.2,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="204.4,128.0 204.4,140.0 194.0,146.0 183.6,140.0 183.6,128.0 194.0,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="225.1,128.0 225.1,140.0 214.7,146.0 204.3,140.0 204.3,128.0 214.7,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="245.9,128.0 245.9,140.0 235.5,146.0 225.1,140.0 225.1,128.0 235.5,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="266.6,128.0 266.6,140.0 256.2,146.0 245.8,140.0 245.8,128.0 256.2,122.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="131.6,146.0 131.6,158.0 121.2,164.0 110.8,158.0 110.8,146.0 121.2,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="152.4,146.0 152.4,158.0 142.0,164.0 131.6,158.0 131.6,146.0 142.0,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="173.2,146.0 173.2,158.0 162.8,164.0 152.4,158.0 152.4,146.0 162.8,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="193.9,146.0 193.9,158.0 183.5,164.0 173.1,158.0 173.1,146.0 183.5,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="214.7,146.0 214.7,158.0 204.3,164.0 193.9,158.0 193.9,146.0 204.3,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="235.4,146.0 235.4,158.0 225.0,164.0 214.6,158.0 214.6,146.0 225.0,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="256.2,146.0 256.2,158.0 245.8,164.0 235.4,158.0 235.4,146.0 245.8,140.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="142.1,164.0 142.1,176.0 131.7,182.0 121.3,176.0 121.3,164.0 131.7,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="162.8,164.0 162.8,176.0 152.4,182.0 142.0,176.0 142.0,164.0 152.4,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="183.6,164.0 183.6,176.0 173.2,182.0 162.8,176.0 162.8,164.0 173.2,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="204.4,164.0 204.4,176.0 194.0,182.0 183.6,176.0 183.6,164.0 194.0,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="225.1,164.0 225.1,176.0 214.7,182.0 204.3,176.0 204.3,164.0 214.7,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="245.9,164.0 245.9,176.0 235.5,182.0 225.1,176.0 225.1,164.0 235.5,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="266.6,164.0 266.6,176.0 256.2,182.0 245.8,176.0 245.8,164.0 256.2,158.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="131.6,182.0 131.6,194.0 121.2,200.0 110.8,194.0 110.8,182.0 121.2,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="152.4,182.0 152.4,194.0 142.0,200.0 131.6,194.0 131.6,182.0 142.0,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="173.2,182.0 173.2,194.0 162.8,200.0 152.4,194.0 152.4,182.0 162.8,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="193.9,182.0 193.9,194.0 183.5,200.0 173.1,194.0 173.1,182.0 183.5,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="214.7,182.0 214.7,194.0 204.3,200.0 193.9,194.0 193.9,182.0 204.3,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="235.4,182.0 235.4,194.0 225.0,200.0 214.6,194.0 214.6,182.0 225.0,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="256.2,182.0 256.2,194.0 245.8,200.0 235.4,194.0 235.4,182.0 245.8,176.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="142.1,200.0 142.1,212.0 131.7,218.0 121.3,212.0 121.3,200.0 131.7,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="162.8,200.0 162.8,212.0 152.4,218.0 142.0,212.0 142.0,200.0 152.4,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="183.6,200.0 183.6,212.0 173.2,218.0 162.8,212.0 162.8,200.0 173.2,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="204.4,200.0 204.4,212.0 194.0,218.0 183.6,212.0 183.6,200.0 194.0,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="225.1,200.0 225.1,212.0 214.7,218.0 204.3,212.0 204.3,200.0 214.7,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="245.9,200.0 245.9,212.0 235.5,218.0 225.1,212.0 225.1,200.0 235.5,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><polygon points="266.6,200.0 266.6,212.0 256.2,218.0 245.8,212.0 245.8,200.0 256.2,194.0" fill="none" stroke="rgba(44,57,48,0.10)" stroke-width="1"/><ellipse cx="166" cy="161" rx="18" ry="14" fill="url(#field)"/></g>
                     <text x="217" y="174" class="mono">f₄(x)</text>
-                    <text x="0" y="212" class="tiny">42–83 cells in total</text>
+                    <text x="0" y="212" class="tiny">⋮   42–83 cells in total</text>
                     <text x="44" y="18" class="lbl">counts ≈50 ms</text>
                     <text x="142" y="18" class="lbl">its rate map</text>
                     <line x1="290" y1="104" x2="352" y2="104" stroke="rgba(44,57,48,0.34)" stroke-width="1.4" marker-end="url(#arwf)"/>
@@ -1388,8 +1618,8 @@
                     <div class="method-num">4</div>
                     <div>
                       <div class="method-head">Measure the sweep against an anchor</div>
-                      <p>A sweep is a departure, so it needs something to depart from. In the first 40 ms of a cycle the decode has not left the animal yet, so decoding just those bins — then smoothing across neighbouring cycles — gives an honest estimate of true position. That is the anchor, and a sweep is decoded minus anchor.</p>
-                      <p>Within each cycle the longest smooth run of decoded points around the peak of population firing is grown, and it is accepted only if it never jumps more than 20 cm or turns more than 90°, holds at least 4 points, is straight (r² > 0.5), and the animal was running above 15 cm/s. A fold-back tail is trimmed rather than rejected. Prevalence is then just the fraction of running cycles holding an accepted sweep.</p>
+                      <p>A sweep is a departure, so it needs a reference. During the first 40 ms of a cycle the decode has not yet departed; decoding those bins and smoothing across neighbouring cycles estimates true position. That is the anchor, and a sweep is decoded minus anchor.</p>
+                      <p>Within each cycle the longest smooth run of decoded points around the peak of population firing is grown, and accepted only if it never jumps more than 20 cm or turns more than 90°, holds at least 4 points, is straight (r² > 0.5), and the animal ran above 15 cm/s. Fold-back tails are trimmed. Prevalence is the fraction of running cycles holding an accepted sweep.</p>
                       <div class="method-figure wide" style="max-width:894px">
                     <svg viewBox="0 0 860 226" role="img" aria-label="The anchor, and a sweep that passes or fails the smoothness gate">
                     <defs>
@@ -1488,8 +1718,8 @@
                     <div class="method-num">5</div>
                     <div>
                       <div class="method-head">Test whether the side alternates</div>
-                      <p>Finally the claim itself. Take every run of three consecutive cycles that each contain a sweep, label each sweep left or right of the animal's heading, and count how often the side flips across the triplet. A map that samples both branches of the path ahead should give L-R-L or R-L-R far more often than chance.</p>
-                      <p>The null is built by shifting each cell's spikes circularly in time, which preserves every firing rate and rhythm while destroying the link to place. To count as alternating, the observed value has to clear the 99.9th percentile of that shuffle.</p>
+                      <p>Take every run of three consecutive cycles that each contain a sweep, label each sweep left or right of heading, and count how often the side flips across the triplet.</p>
+                      <p>The null shifts each cell's spikes circularly in time, preserving firing rate and rhythm while destroying the link to place. To count as alternating, the observed value must clear the 99.9th percentile of that shuffle.</p>
                       <div class="method-figure" style="max-width:464px">
                     <svg viewBox="0 0 430 200" role="img" aria-label="Left-right alternation across three adjacent theta cycles">
                     <defs>
@@ -1553,10 +1783,9 @@
                 </div>
                 <div class="media-caption">
                   Decoded position overlaid on the maze camera (Rat 6, session 5). The white circle is the
-                  animal; the cyan-to-magenta trail is the position decoded from the population, cycle by
-                  cycle, labelled by the side it departs to. These are the only 2 of 15 adjacent-cycle
-                  triplets in the session that alternate L → R → L, and even that count is a loose one,
-                  since it still includes backward sweeps.
+                  animal; the cyan-to-magenta trail is position decoded cycle by cycle, labelled by the side
+                  it departs to. These are the only 2 of 15 adjacent-cycle triplets in the session that
+                  alternate L → R → L, and that count is a loose one — it still includes backward sweeps.
                 </div>
                 <div class="media-block">
                   <a href="Media/theta-sweeps/triplets_alternating_unfolded.png" target="_blank" rel="noopener" title="Open full size"><img loading="lazy" width="1785" height="508" src="Media/theta-sweeps/triplets_alternating_unfolded.png"
@@ -1569,30 +1798,22 @@
                 </div>
                 <div class="procedure-title">Where it stands</div>
                 <p>
-                  The sweep-like events are real structure: prevalence beats the circular spike-shift shuffle
-                  in every session, 3.3× on average. The alternation is not. In all ten sessions the observed
-                  left–right alternation stays below the 99.9th percentile of the shuffle, and 46 % of the
-                  sweeps point behind the animal rather than ahead — close to the 50 % you would get from
-                  random directions. Requiring sweeps to run forward, as a real theta sweep must, removes the
-                  mild above-chance alternation that remains.
+                  Sweep-like events are real structure: prevalence beats the circular spike-shift shuffle in
+                  every session, 3.3× on average. The alternation is not. Observed left–right alternation
+                  stays below the 99.9th percentile of the shuffle in all ten sessions, and 46 % of sweeps
+                  point behind the animal rather than ahead — near the 50 % expected from random directions.
+                  Requiring sweeps to run forward removes the mild above-chance alternation that remains.
                 </p>
                 <div class="dv-note">
-                  <strong>Why it fails, as far as I can tell:</strong> at 10 ms — the timescale a sweep needs —
-                  the population carries no decodable position at all. A cross-validated decoder sits at
-                  chance (253 cm error against a 252 cm null that just predicts the training centroid), and
-                  19–52 % of running 10 ms bins contain zero spikes from every recorded cell — a vector no
-                  method can place in the maze. Heavier smoothing surfaces sweep-<em>like</em> trajectories,
-                  but not forward alternating ones. Speed gating, theta phase from spiking rather than LFP,
-                  state-space size, cross-validated smoothing width, head direction from DLC, and a genuine
-                  LFP timestamp bug in 6 of 10 files were each ruled out with their own decisive number.
+                  <strong>The likeliest cause:</strong> at 10 ms — the timescale a sweep needs — the
+                  population carries no decodable position. A cross-validated decoder sits at chance, 253 cm
+                  error against a 252 cm null that predicts the training centroid, and 19–52 % of running
+                  10 ms bins contain no spikes from any recorded cell. Heavier smoothing surfaces
+                  sweep-<em>like</em> trajectories, but not forward alternating ones. Speed gating, theta
+                  phase from spiking, state-space size, cross-validated smoothing width, head direction from
+                  DLC, and a genuine LFP timestamp bug in 6 of 10 files were each ruled out with their own
+                  decisive number.
                 </div>
-                <p style="margin-top:1.5rem;">
-                  What does work without a decoder is <strong>vicarious trial and error</strong>: scoring the
-                  back-and-forth head movements at the maze's 49 junctions from tracking alone gives 2,710
-                  choice-point passes, and high-zIdPhi passes travel the same net distance across a junction
-                  over a path half again as long, at half the speed, with 1.64× the tortuosity
-                  (p = 8 × 10⁻⁹⁰). That deliberation signature declines with trial number in all ten sessions.
-                </p>
                 <div class="repo-link">
                   Code, full write-up and every rescue attempted:
                   <a href="https://github.com/hmp94/Reproduce-Theta-Sweeps-from-HexMaze-dataset" target="_blank" rel="noopener">
