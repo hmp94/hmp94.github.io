@@ -168,9 +168,9 @@
     }
     .hx-wordmark .w1, .hx-wordmark .w2 { display: table; line-height: 0.8; }
     .hx-bl { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
-    /* You (the cut-out), in front of your name and the church photo, centered on your head. On wide screens JS makes
-       you 78% of the hero's height, standing on its bottom edge; elsewhere your head sits just below the nav, your
-       shoes run off the bottom edge, and you grow only if the photo would otherwise stop short of the screen's sides. */
+    /* You (the cut-out), in front of your name and the church photo: your head just below the nav, your shoes
+       running off the bottom edge (the lowest 10.7% of the picture). JS centers you on your head, and grows you
+       only if the photo behind you would otherwise stop short of the screen's sides. */
     .hx-person {
       --h: 104.6%;
       position: absolute;
@@ -286,8 +286,6 @@
       mask-repeat: no-repeat;
     }
     .hx-photo img { position: absolute; max-width: none; display: block; }
-    /* Framed (wide screens): the right-hand text sits in the narrow paper column beside the photo */
-    #hero.hx-framed .hx-sub { margin-left: 0; }
     /* Your name in one line, split around you: you stand in the middle in front of the photo (the cut-out sits
        exactly on you in it), MINH to your left and PHAN to your right. JS sizes and places both. */
     .hx-wordmark .w1, .hx-wordmark .w2 { display: inline; letter-spacing: -0.03em; }
@@ -2185,8 +2183,6 @@
     var W = sr.width, H = sr.height, s = pr.height / PHOTO.cutH;
     var imgL = pr.left - sr.left - PHOTO.cutX * s, imgT = pr.top - sr.top - PHOTO.cutY * s;
     var imgR = imgL + PHOTO.w * s, imgB = imgT + PHOTO.h * s;
-    var framed = framedScale(sr) > 0;
-    document.getElementById('hero').classList.toggle('hx-framed', framed);
     img.style.width = (PHOTO.w * s).toFixed(1) + 'px';
     img.style.height = (PHOTO.h * s).toFixed(1) + 'px';
     img.style.left = imgL.toFixed(1) + 'px';
@@ -2223,7 +2219,6 @@
     if (imgL > 0) erase(-big, imgL, 120, -big, big, 0);                    // the photo's own left edge
     if (imgR < W) erase(imgR, big, 120, -big, big, 0);                     // the photo's own right edge
     if (imgT > 0) erase(-big, big, 0, -big, imgT, 90);                     // the photo's own top edge
-    if (framed) erase(-big, big, 0, -big, document.querySelector('nav').offsetHeight, FRAMED.topFade);   // paper under the menu
     var url = 'url(' + c.toDataURL('image/png') + ')';
     panel.style.webkitMaskImage = url; panel.style.maskImage = url;
     // The cut-out stands in front of the name: give it the photo's bottom fade too.
@@ -2232,20 +2227,6 @@
       var off = pr.top - sr.top;
       var fm = 'linear-gradient(to bottom, #000 ' + (0.66 * H - off).toFixed(1) + 'px, transparent ' + (H - off).toFixed(1) + 'px)';
       fig.style.webkitMaskImage = fm; fig.style.maskImage = fm;
-    }
-
-    // Framed: the small text on the left and "Curious about minds." on the right sit on the paper beside the photo;
-    // the headline shrinks only if its longest line would otherwise reach back onto the photo.
-    var side = document.querySelector('.hx-side'), main = document.querySelector('.hx-main'), hl = document.querySelector('.hx-headline');
-    [side, main, hl].forEach(function (el) { if (el) { el.style.width = ''; el.style.fontSize = ''; } });
-    if (framed && side && main && hl) {
-      var tpad = document.querySelector('.hx-text').getBoundingClientRect().left - sr.left;
-      side.style.width = Math.max(110, imgL - tpad - 16).toFixed(1) + 'px';
-      var colW = Math.max(150, W - tpad - imgR - 16);
-      main.style.width = colW.toFixed(1) + 'px';
-      var range = document.createRange(); range.selectNodeContents(hl);
-      var lineW = Math.max.apply(null, [].map.call(range.getClientRects(), function (r) { return r.width; }));
-      if (lineW > colW) hl.style.fontSize = (parseFloat(getComputedStyle(hl).fontSize) * colW / lineW).toFixed(2) + 'px';
     }
 
     // Text that sits on the photo turns white; text on the paper (or the faded bottom) stays ink.
@@ -2276,50 +2257,27 @@
 
   // Your name in one line, split around you: you stand in the middle (centered on your head), MINH ends just left
   // of you and PHAN starts just right of you, the same size, the tops of the letters level with your head.
-  // Wide screens show the photo at its own width in the middle of the hero ("framed"): you are 78% of the hero's
-  // height and stand on its bottom edge, the photo's sides and top fade into the page, and MINH and PHAN fit inside
-  // the photo, either side of your head. Where the paper either side would be too thin (and on phones), the photo
-  // fills the width instead.
-  var FRAMED = { k: 0.78, nameInset: 150, topFade: 70, minMargin: 160 };
-  function framedScale(sr) {                       // the photo's scale in the framed layout, or 0 when it does not fit
-    var W = sr.width, H = sr.height;
-    if (W < 768 || W / H < 0.8) return 0;
-    var s = FRAMED.k * H / PHOTO.cutH;
-    return W / 2 - (PHOTO.w - PHOTO.cutX - 0.16 * PHOTO.cutH) * s >= FRAMED.minMargin ? s : 0;
-  }
-
-  // Nothing overlaps: the name is sized to the space either side of your head.
+  // Nothing overlaps. You grow only as much as needed for the photo behind you to reach both sides of the screen.
   function layoutWide(h, lines, person, sr, pad) {
-    var W = sr.width, H = sr.height, framed = framedScale(sr) > 0;
+    var W = sr.width;
     person.style.removeProperty('--h'); person.style.top = ''; person.style.bottom = ''; person.style.left = ''; person.style.transform = '';
-    var navB = document.querySelector('nav').offsetHeight + 8;
-    var pr0 = person.getBoundingClientRect(), ph = framed ? H * FRAMED.k : pr0.height, s = ph / PHOTO.cutH;
-    var headY = framed
-      ? Math.max(H - (PHOTO.h - PHOTO.cutY) * s + CUTOUT.top * ph, navB + FRAMED.topFade)   // the photo's bottom on the hero's
-      : Math.max(pr0.top - sr.top + CUTOUT.top * ph, navB);                                  // never under the nav
+    var pr0 = person.getBoundingClientRect(), ph = pr0.height;
+    var headY = Math.max(pr0.top - sr.top + CUTOUT.top * ph, document.querySelector('nav').offsetHeight + 8);   // never under the nav
     h.style.transform = 'none'; h.style.fontSize = ''; h.style.width = (W - 2 * pad).toFixed(1) + 'px';
     lines.forEach(function (l) { l.style.position = 'absolute'; l.style.top = '0'; l.style.left = '0'; l.style.display = 'block'; l.style.fontSize = '100px'; });
     var w1 = lines[0].getBoundingClientRect().width / 100, w2 = lines[1].getBoundingClientRect().width / 100;
     var cs = getComputedStyle(lines[0]);
     inkCanvas.font = cs.fontWeight + ' 100px ' + cs.fontFamily;
     var capR = inkCanvas.measureText('MINH').actualBoundingBoxAscent / 100;
-    var gap = Math.max(12, W * 0.018), fs = 100, band = [0.55, 0.88], left = 0, pw = ph * 0.32;
-    for (var it = 0; it < 8; it++) {
+    var gap = Math.max(12, W * 0.018), fs = 100, band = [0.55, 0.88], left = 0;
+    for (var it = 0; it < 6; it++) {
       band = outlineBetween(CUTOUT.top, CUTOUT.top + capR * fs / ph + 0.01);
       var cx = (band[0] + band[1]) / 2;
-      if (framed) {
-        left = W / 2 - cx * pw;
-        var imgL = left - PHOTO.cutX * s, imgR = imgL + PHOTO.w * s;
-        var fl = Math.max(pad, imgL + FRAMED.nameInset), fr = Math.min(W - pad, imgR - FRAMED.nameInset);
-        fs = Math.min((left + band[0] * pw - gap - fl) / w1, (fr - (left + band[1] * pw) - gap) / w2);
-      } else {
-        // you grow only as much as needed for the photo behind you to reach both sides of the screen
-        var pxc = PHOTO.cutX + cx * PHOTO.cutH * 0.32;
-        ph = Math.max(pr0.height, PHOTO.cutH * (W / 2) / Math.min(pxc, PHOTO.w - pxc) * 1.003);
-        pw = ph * 0.32;
-        left = W / 2 - cx * pw;
-        fs = (W - 2 * pad - (band[1] - band[0]) * pw - 2 * gap) / 2 / Math.max(w1, w2);
-      }
+      var pxc = PHOTO.cutX + cx * PHOTO.cutH * 0.32;
+      ph = Math.max(pr0.height, PHOTO.cutH * (W / 2) / Math.min(pxc, PHOTO.w - pxc) * 1.003);
+      var pw = ph * 0.32;
+      left = W / 2 - cx * pw;
+      fs = (W - 2 * pad - (band[1] - band[0]) * pw - 2 * gap) / 2 / Math.max(w1, w2);
     }
     person.style.setProperty('--h', ph.toFixed(1) + 'px');
     person.style.bottom = 'auto';
@@ -2327,9 +2285,9 @@
     person.style.left = left.toFixed(1) + 'px';
     person.style.transform = 'none';
     lines.forEach(function (l) { l.style.fontSize = fs.toFixed(2) + 'px'; });
-    var mw = lines[0].getBoundingClientRect().width;
-    lines[0].style.left = (left + band[0] * pw - gap - mw - pad).toFixed(1) + 'px';
-    lines[1].style.left = (left + band[1] * pw + gap - pad).toFixed(1) + 'px';
+    var pw2 = ph * 0.32, mw = lines[0].getBoundingClientRect().width;
+    lines[0].style.left = (left + band[0] * pw2 - gap - mw - pad).toFixed(1) + 'px';
+    lines[1].style.left = (left + band[1] * pw2 + gap - pad).toFixed(1) + 'px';
     var base = lines[0].querySelector('.hx-bl').getBoundingClientRect().top - sr.top;
     h.style.transformOrigin = '0 0';
     h.style.transform = 'translateY(' + (headY - (base - capR * fs)).toFixed(1) + 'px)';
