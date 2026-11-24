@@ -1289,6 +1289,22 @@
     .cardview--dark .cardview-media img { filter: grayscale(1) contrast(1.05); }
     .cardview--dark .cardview-kicker, .cardview--dark .cardview-label { color: #9A9A9A; }
     .cardview--dark .cardview-label { border-top-color: rgba(248, 248, 248, 0.16); }
+    /* Writing mode (?write): a text box in the card view instead of the text, and a small bar at the bottom left */
+    .cardview-draft { display: block; width: 100%; min-height: 240px; resize: vertical; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 0; background: rgba(255, 255, 255, 0.7); color: inherit; font-family: var(--serif-x); font-size: 18px; line-height: 1.55; }
+    .cardview-draft:focus { outline: 1px solid currentColor; outline-offset: 0; }
+    .cardview--dark .cardview-draft { background: rgba(255, 255, 255, 0.04); border-color: rgba(248, 248, 248, 0.2); }
+    .cardview-write-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; }
+    .cardview-saved { margin: 0; color: var(--text-dim); }
+    .cardview--dark .cardview-saved { color: #9A9A9A; }
+    .cardview-copy, .writebar-copy { flex: none; padding: 8px 12px; border: 1px solid currentColor; background: none; color: inherit; cursor: pointer; }
+    .writebar { position: fixed; left: 16px; bottom: 16px; z-index: 150; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 16px; background: var(--ink); color: #F8F8F8; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); }
+    .writebar[hidden], html.cardview-lock .writebar { display: none; }
+    .writebar .micro { color: inherit; white-space: nowrap; }
+    .writebar .writebar-count { color: #9A9A9A; }
+    @media (max-width: 767px) {
+      .cardview-draft { font-size: 16px; min-height: 200px; }       /* 16px: phones don't zoom in on it */
+      .writebar { left: 12px; right: 12px; bottom: 12px; justify-content: space-between; }
+    }
     html.cardview-lock { overflow: hidden; }
     @media (max-width: 767px), (max-aspect-ratio: 4/5) {
       .cardview { padding: 12px; }
@@ -1490,12 +1506,12 @@
 
         <div class="about-intro reveal"></div>
 
-        <!-- Favourite characters: a guessing game. What they share is never named on purpose. Names show on hover;
-             clicking a card opens my thoughts under it (replace "My thoughts are coming soon.", several <p> are fine). -->
+        <!-- Favourite characters: what they share is said outright (goofy geniuses). Names show on hover;
+             clicking a card opens my thoughts in the card view (replace "My thoughts are coming soon.", several <p> are fine). -->
         <section class="fav reveal" aria-labelledby="fav-title">
           <div class="fav-head">
             <h3 class="fav-title" id="fav-title">Let&rsquo;s start with my favorite characters.</h3>
-            <p class="micro fav-hint">Four minds,<br>one thing in common.<br>Can you guess it?</p>
+            <p class="micro fav-hint">Four minds,<br>one thing in common:<br>goofy geniuses.</p>
           </div>
           <ul class="fav-grid">
             <li class="fav-card" tabindex="0">
@@ -2301,8 +2317,22 @@
       <p class="cardview-notes"></p>
       <p class="micro cardview-label"></p>
       <div class="cardview-body"></div>
+      <div class="cardview-write" hidden>
+        <textarea class="cardview-draft" rows="9" aria-label="Write here"></textarea>
+        <div class="cardview-write-row">
+          <p class="micro cardview-saved" aria-live="polite"></p>
+          <button class="micro cardview-copy" type="button">Copy all</button>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- Writing mode (open the site with ?write): my drafts, kept on this device only (see "Writing mode" in the script) -->
+<div class="writebar" id="writebar" hidden>
+  <span class="micro">Writing mode</span>
+  <span class="micro writebar-count"></span>
+  <button class="micro writebar-copy" type="button">Copy all</button>
 </div>
 
 <script>
@@ -2340,6 +2370,61 @@
       document.documentElement.classList.toggle('cardview-lock', off);
       document.body.style.paddingRight = off && bar > 0 ? bar + 'px' : '';
     }
+    /* Writing mode: opening the site with ?write turns the card view's text into a box I can write my review or
+       thoughts in. Each draft is kept on this device (localStorage) as I type; "Copy all" puts every draft on the
+       clipboard, labelled with its name, to paste to Claude, who puts them into the page. Visitors never see it. */
+    var writing = /[?&]write(=|&|$)/.test(location.search);
+    var body = view.querySelector('.cardview-body'), write = view.querySelector('.cardview-write');
+    var draft = view.querySelector('.cardview-draft'), saved = view.querySelector('.cardview-saved'), bar = document.getElementById('writebar');
+    var store = {
+      get: function (k) { try { return localStorage.getItem('mp-draft:' + k); } catch (e) { return null; } },
+      set: function (k, v) { try { if (v) localStorage.setItem('mp-draft:' + k, v); else localStorage.removeItem('mp-draft:' + k); return true; } catch (e) { return false; } }
+    };
+    var keyOf = function (c) { var p = c.querySelector('.more-panel'); return p ? p.id : ''; };
+    function published(c) {        // the card's text as plain paragraphs, or nothing while it is still "coming soon"
+      var t = [].map.call(c.querySelectorAll('.more-inner p'), function (p) { return p.textContent.trim(); }).join('\n\n');
+      return /coming soon\.?$/i.test(t) ? '' : t;
+    }
+    function drafts() {
+      return [].map.call(document.querySelectorAll('.fav-card, .frag-card'), function (c) {
+        var t = (store.get(keyOf(c)) || '').trim();
+        return t ? text(c, '.fav-name, .frag-name') + ':\n' + t : '';
+      }).filter(Boolean);
+    }
+    function showCount() {
+      var n = drafts().length;
+      bar.querySelector('.writebar-count').textContent = n ? n + (n === 1 ? ' draft' : ' drafts') : 'No drafts';
+    }
+    function copyAll(btn) {
+      var list = drafts(), all = list.join('\n\n');
+      var say = function (msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = 'Copy all'; }, 1800); };
+      if (!list.length) return say('Nothing yet');
+      var asFile = function () {                     // copying refused: hand the drafts over as a text file instead
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([all + '\n'], { type: 'text/plain' }));
+        a.download = 'minh-drafts.txt'; view.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+        say('Saved as a file');
+      };
+      var fallback = function () {                   // older browsers: copy from a hidden text box
+        var ta = document.createElement('textarea'); ta.value = all; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+        view.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+        ta.remove(); if (ok) say('Copied ' + list.length); else asFile();
+      };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(all).then(function () { say('Copied ' + list.length); }, fallback);
+      else fallback();
+    }
+    if (writing) {
+      bar.hidden = false; showCount();
+      bar.querySelector('.writebar-copy').addEventListener('click', function () { copyAll(this); });
+      view.querySelector('.cardview-copy').addEventListener('click', function () { copyAll(this); });
+      draft.addEventListener('input', function () {
+        var ok = store.set(draft.dataset.key, draft.value.trim() ? draft.value : '');
+        saved.textContent = ok ? 'Saved on this device' : 'Not saved: this browser blocks it. Copy before closing';
+        showCount();
+      });
+    }
+
     function open(c) {
       clearTimeout(timer);
       var pic = frameOf(c).querySelector('img'), btn = c.querySelector('.more-btn');
@@ -2351,6 +2436,15 @@
       view.querySelector('.cardview-label').textContent = btn ? btn.textContent.trim() : '';
       var panel = c.querySelector('.more-inner');
       view.querySelector('.cardview-body').innerHTML = panel ? panel.innerHTML : '';
+      body.hidden = writing; write.hidden = !writing;
+      if (writing) {
+        var k = keyOf(c), mine = store.get(k), who = text(c, '.fav-name, .frag-name');
+        draft.dataset.key = k;
+        draft.value = mine !== null ? mine : published(c);
+        draft.placeholder = (c.classList.contains('fav-card') ? 'My thoughts on ' : 'My review of ') + who + '\u2026';
+        saved.textContent = mine ? 'Saved on this device' : 'Writes as you type; kept on this device';
+        draft.scrollTop = 0;
+      }
       view.querySelector('.cardview-text').scrollTop = 0; dialog.scrollTop = 0;
       card = c;
       setPage(true);
@@ -2364,6 +2458,9 @@
       media.style.transform = '';                               // ...and fly to the middle
       view.classList.add('is-open');
       view.querySelector('.cardview-close').focus({ preventScroll: true });
+      if (writing && window.matchMedia('(pointer: fine)').matches) {   // laptops: ready to type once it has landed
+        setTimeout(function () { if (card === c) draft.focus({ preventScroll: true }); }, still.matches ? 0 : 620);
+      }
     }
     function close() {
       if (!card) return;
