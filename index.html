@@ -289,8 +289,10 @@
     /* Your name in one line, split around you: you stand in the middle in front of the photo (the cut-out sits
        exactly on you in it), MINH to your left and PHAN to your right. JS sizes and places both. */
     .hx-wordmark .w1, .hx-wordmark .w2 { display: inline; letter-spacing: -0.03em; }
+    /* Wider screens: the small label on the left starts level with the top of the headline on the right */
     @media (min-width: 768px) and (min-aspect-ratio: 4/5) {
-      .hx-side { left: 0; right: auto; top: 46%; width: max(200px, 17vw); }
+      .hx-text { top: auto; align-items: flex-start; }
+      .hx-side { position: static; width: max(200px, 17vw); }
     }
     /* Text sitting on the photo turns white (JS adds .on-photo); the nav goes back to ink once it turns paper on scroll */
     body[data-page="hero"]:not(.menu-open) nav:not(.scrolled) .on-photo,
@@ -1291,7 +1293,7 @@
     </div>
     <div class="hx-text">
       <div class="hx-side">
-        <p class="micro">Cognitive<br>neuroscience<br>enthusiast &amp;<br>coffee lover</p>
+        <p class="micro">Brain and<br>coffee lover</p>
         <span class="rule"></span>
       </div>
       <div class="hx-main">
