@@ -1209,11 +1209,10 @@
     .fav-frame { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #1A1A1A; }
     .fav-frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) brightness(0.7) contrast(1.05); transform: scale(1.02); transition: filter 0.6s ease, transform 0.8s ease; }
     .fav-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 42%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.6) 100%); transition: opacity 0.6s ease; }
-    .fav-q { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--serif-x); font-weight: 300; font-size: clamp(48px, 6vw, 96px); color: #3A3A3A; }
+    .fav .fav-credits { margin: clamp(16px, 2vw, 24px) 0 0; color: #7A7A7A; }
     .fav-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; }
-    .fav-no { white-space: nowrap; }
-    .fav-name { font-family: var(--sans-x); font-size: 15px; letter-spacing: -0.01em; color: #F8F8F8; text-align: right; opacity: 0; transform: translateY(4px); transition: opacity 0.4s ease, transform 0.4s ease; }
-    .fav-show { margin: 4px 0 0; text-align: right; opacity: 0; transition: opacity 0.4s ease 0.05s; }
+    .fav-name { font-family: var(--sans-x); font-size: 15px; letter-spacing: -0.01em; color: #F8F8F8; text-align: left; opacity: 0; transform: translateY(4px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .fav-show { margin: 4px 0 0; text-align: left; opacity: 0; transition: opacity 0.4s ease 0.05s; }
     .fav-card:hover .fav-frame img, .fav-card:focus-visible .fav-frame img { filter: grayscale(1) brightness(1) contrast(1.05); transform: scale(1.05); }
     .fav-card:hover .fav-frame::after, .fav-card:focus-visible .fav-frame::after { opacity: 0.35; }
     .fav-card:hover .fav-name, .fav-card:hover .fav-show,
@@ -1232,6 +1231,93 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .fav-frame img, .fav-frame::after, .fav-name, .fav-show { transition: none; }
+    }
+    /* Cards with a text of mine (fragrance reviews, thoughts on the characters). Each card ends in a "My review" or
+       "My thoughts" row; the text itself waits, hidden, in the card's .more-panel. Clicking a card lifts its picture
+       out of the grid and flies it to the middle of the screen, on a layer above the page, and the text opens beside
+       it (below it on phones). Closing flies the picture back into its slot. */
+    .more-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 14px 0 0; padding: 13px 0 14px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; cursor: pointer; }
+    .more-btn:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+    .more-plus { position: relative; flex: none; width: 11px; height: 11px; }
+    .more-plus::before, .more-plus::after { content: ''; position: absolute; left: 0; top: 5px; width: 11px; height: 1px; background: currentColor; }
+    .more-plus::after { transform: rotate(90deg); }
+    .more-panel { display: none; }
+    .frag-card.is-lifted .frag-frame img, .fav-card.is-lifted .fav-frame img { visibility: hidden; }   /* its picture is in the air */
+    /* on the dark character band */
+    .fav-grid { align-items: start; }
+    .fav-card { cursor: pointer; }
+    .fav .more-btn { justify-content: flex-start; gap: 12px; color: #D8D8D8; border-top-color: rgba(248, 248, 248, 0.16); }
+
+    /* The card view: a dimmed, blurred page behind; a panel in the middle with the picture and the text */
+    .cardview { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; }
+    .cardview[hidden] { display: none; }
+    .cardview-backdrop { position: absolute; inset: 0; background: rgba(17, 17, 17, 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
+    .cardview.is-open .cardview-backdrop { opacity: 1; transition-duration: 0.4s; }
+    .cardview-dialog { position: relative; isolation: isolate; display: grid; grid-template-columns: auto minmax(0, 380px); gap: 40px; align-items: start; max-width: 100%; padding: 28px; color: var(--ink); outline: none; }
+    .cardview-dialog::before { content: ''; position: absolute; inset: 0; z-index: -1; background: #FAF8F4; opacity: 0; transform: scale(0.97); transition: opacity 0.25s ease, transform 0.3s ease; }
+    .cardview.is-open .cardview-dialog::before { opacity: 1; transform: none; transition: opacity 0.35s ease 0.1s, transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s; }
+    .cardview-media { position: relative; z-index: 1; width: min(calc(72vh * 0.8), 480px); aspect-ratio: 4 / 5; overflow: hidden; background: #1A1A1A; transform-origin: 0 0; will-change: transform; }
+    .cardview-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cardview-text { max-height: min(72vh, 600px); overflow: auto; padding-top: 4px; opacity: 0; transform: translateX(-14px); transition: opacity 0.15s ease, transform 0.2s ease; }
+    .cardview.is-open .cardview-text { opacity: 1; transform: none; transition: opacity 0.4s ease 0.38s, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.38s; }
+    .cardview-kicker { margin: 0 0 10px; color: var(--text-dim); }
+    .cardview-title { margin: 0; font-family: var(--serif-x); font-weight: 300; font-size: clamp(30px, 3.2vw, 46px); line-height: 1.04; letter-spacing: -0.015em; }
+    .cardview-notes { margin: 10px 0 0; font-family: var(--serif-x); font-style: italic; font-size: 17px; line-height: 1.35; }
+    .cardview-notes:empty { display: none; }
+    .cardview-label { margin: 26px 0 14px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--text-dim); }
+    .cardview-body p { margin: 0 0 14px; font-family: var(--serif-x); font-size: 18px; line-height: 1.55; }
+    .cardview-close { position: absolute; top: 12px; right: 12px; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 8px; border: 0; background: none; color: inherit; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
+    .cardview.is-open .cardview-close { opacity: 1; transition: opacity 0.3s ease 0.4s; }
+    .cardview-close .more-plus { transform: rotate(45deg); }
+    .cardview-close:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+    /* the characters' view is dark, like their band, and keeps them in black and white */
+    .cardview--dark .cardview-dialog { color: #F2F2F2; }
+    .cardview--dark .cardview-dialog::before { background: #161616; box-shadow: 0 0 0 1px rgba(248, 248, 248, 0.14), 0 30px 80px rgba(0, 0, 0, 0.5); }
+    .cardview--dark .cardview-media img { filter: grayscale(1) contrast(1.05); }
+    .cardview--dark .cardview-kicker, .cardview--dark .cardview-label { color: #9A9A9A; }
+    .cardview--dark .cardview-label { border-top-color: rgba(248, 248, 248, 0.16); }
+    html.cardview-lock { overflow: hidden; }
+    @media (max-width: 767px), (max-aspect-ratio: 4/5) {
+      .cardview { padding: 12px; }
+      .cardview-dialog { grid-template-columns: minmax(0, 1fr); gap: 18px; width: 100%; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow: auto; padding: 52px 16px 8px; }
+      .cardview-close { top: 8px; right: 6px; }                    /* in its own row, above the picture */
+      .cardview-media { width: min(100%, calc(46vh * 0.8)); justify-self: center; }
+      .cardview-text { max-height: none; overflow: visible; transform: translateY(10px); }
+      .cardview-title { font-size: 30px; }
+      .cardview-body p { font-size: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cardview-backdrop, .cardview-dialog::before, .cardview-text, .cardview-close,
+      .cardview.is-open .cardview-backdrop, .cardview.is-open .cardview-dialog::before, .cardview.is-open .cardview-text, .cardview.is-open .cardview-close { transition: none; }
+    }
+    /* ABOUT: fragrance collection. Each bottle is a card: an artistic photo (in color), its name, house and a few
+       notes. Clicking a card (or its "My review" row) opens the review under it; clicking again closes it. */
+    .frag { padding: clamp(44px, 5vw, 80px) 0 clamp(8px, 2vw, 24px); }
+    .frag-head { margin-bottom: clamp(24px, 3vw, 40px); }
+    .frag-title { margin: 0; max-width: 14ch; font-family: var(--serif-x); font-weight: 300; font-size: clamp(30px, 4vw, 60px); line-height: 1.02; letter-spacing: -0.015em; color: var(--ink); }
+    .frag .micro { color: var(--text-dim); }
+    .frag-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .frag-card { background: #FAF8F4; border: 1px solid var(--line); padding: 10px 10px 0; cursor: pointer; transition: border-color 0.3s ease; }
+    .frag-card:hover, .frag-card.open { border-color: rgba(17, 17, 17, 0.4); }
+    .frag-frame { aspect-ratio: 4 / 5; overflow: hidden; background: #1A1A1A; }
+    .frag-frame img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s ease; }
+    .frag-card:hover .frag-frame img { transform: scale(1.04); }
+    .frag-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 14px; }
+    .frag-name { font-family: var(--sans-x); font-size: 17px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink); }
+    .frag-house { margin: 2px 0 0; }
+    .frag-notes { margin: 8px 0 0; font-family: var(--serif-x); font-style: italic; font-size: 16px; line-height: 1.35; color: var(--ink); }
+    .frag .more-btn { color: var(--ink); }
+    .frag-credits { margin: clamp(24px, 3vw, 40px) 0 0; max-width: 90ch; }
+    .frag-credits a { color: inherit; }
+    @media (max-width: 767px) {
+      .frag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .frag-card { padding: 8px 8px 0; }
+      .frag-cap { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .frag-name { font-size: 15px; }
+      .frag-notes { font-size: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .frag-frame img { transition: none; }
     }
   </style>
 </head>
@@ -1391,7 +1477,8 @@
 
         <div class="about-intro reveal"></div>
 
-        <!-- Favourite characters: a guessing game. What they share is never named on purpose. -->
+        <!-- Favourite characters: a guessing game. What they share is never named on purpose. Names show on hover;
+             clicking a card opens my thoughts under it (replace "My thoughts are coming soon.", several <p> are fine). -->
         <section class="fav reveal" aria-labelledby="fav-title">
           <div class="fav-head">
             <h3 class="fav-title" id="fav-title">Let&rsquo;s start with my favorite characters.</h3>
@@ -1399,26 +1486,161 @@
           </div>
           <ul class="fav-grid">
             <li class="fav-card" tabindex="0">
-              <div class="fav-frame"><span class="fav-q" aria-hidden="true">?</span></div>
-              <div class="fav-cap"><span class="micro fav-no">No. 01</span><span class="fav-name">Gregory House</span></div>
+              <div class="fav-frame"><img src="Media/characters/house.jpg" width="564" height="705" loading="lazy" alt="Gregory House at a chessboard"></div>
+              <div class="fav-cap"><span class="fav-name">Gregory House</span></div>
               <p class="micro fav-show">House M.D.</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="fav-thoughts-01">My thoughts<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="fav-thoughts-01">
+                <div class="more-inner">
+                  <p>My thoughts are coming soon.</p>
+                </div>
+              </div>
             </li>
             <li class="fav-card" tabindex="0">
-              <div class="fav-frame"><span class="fav-q" aria-hidden="true">?</span></div>
-              <div class="fav-cap"><span class="micro fav-no">No. 02</span><span class="fav-name">L</span></div>
+              <div class="fav-frame"><img src="Media/characters/l.jpg" width="720" height="900" loading="lazy" alt="L, thumb to his lip, deep in thought"></div>
+              <div class="fav-cap"><span class="fav-name">L</span></div>
               <p class="micro fav-show">Death Note</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="fav-thoughts-02">My thoughts<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="fav-thoughts-02">
+                <div class="more-inner">
+                  <p>My thoughts are coming soon.</p>
+                </div>
+              </div>
             </li>
             <li class="fav-card" tabindex="0">
-              <div class="fav-frame"><span class="fav-q" aria-hidden="true">?</span></div>
-              <div class="fav-cap"><span class="micro fav-no">No. 03</span><span class="fav-name">Ranpo Edogawa</span></div>
+              <div class="fav-frame"><img src="Media/characters/ranpo.jpg" width="598" height="748" loading="lazy" alt="Ranpo Edogawa under his cap, eyes half closed"></div>
+              <div class="fav-cap"><span class="fav-name">Ranpo Edogawa</span></div>
               <p class="micro fav-show">Bungo Stray Dogs</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="fav-thoughts-03">My thoughts<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="fav-thoughts-03">
+                <div class="more-inner">
+                  <p>My thoughts are coming soon.</p>
+                </div>
+              </div>
             </li>
             <li class="fav-card" tabindex="0">
-              <div class="fav-frame"><span class="fav-q" aria-hidden="true">?</span></div>
-              <div class="fav-cap"><span class="micro fav-no">No. 04</span><span class="fav-name">Sherlock Holmes</span></div>
+              <div class="fav-frame"><img src="Media/characters/sherlock.jpg" width="570" height="712" loading="lazy" alt="Sherlock Holmes looking down, lost in thought"></div>
+              <div class="fav-cap"><span class="fav-name">Sherlock Holmes</span></div>
               <p class="micro fav-show">Sherlock</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="fav-thoughts-04">My thoughts<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="fav-thoughts-04">
+                <div class="more-inner">
+                  <p>My thoughts are coming soon.</p>
+                </div>
+              </div>
             </li>
           </ul>
+          <p class="media-caption fav-credits">Pictures found on Pinterest: stills from <i>House M.D.</i>, <i>Bungo Stray Dogs</i>
+            and <i>Sherlock</i>, and a drawing of L (artist unknown).</p>
+        </section>
+
+        <!-- Fragrance collection: one card per bottle. Notes come from the houses' and shops' listings.
+             To add a review, replace "My review is coming soon." in that bottle's .more-panel (several <p> are fine). -->
+        <section class="frag reveal" aria-labelledby="frag-title">
+          <div class="frag-head">
+            <h3 class="frag-title" id="frag-title">Next, my fragrance collection.</h3>
+          </div>
+          <ul class="frag-grid">
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/the-dark-side.jpg" width="720" height="900" loading="lazy"
+                   alt="The Dark Side bottle among wisps of smoke, violets, star anise and cinnamon"></div>
+              <div class="frag-cap"><span class="frag-name">The Dark Side</span></div>
+              <p class="micro frag-house">Francesca Bianchi</p>
+              <p class="frag-notes">Incense, amber, vanilla</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-01">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-01">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/boccanera.jpg" width="720" height="900" loading="lazy"
+                   alt="Boccanera bottle in front of dried red chillies and cacao pods on black"></div>
+              <div class="frag-cap"><span class="frag-name">Boccanera</span></div>
+              <p class="micro frag-house">Orto Parisi</p>
+              <p class="frag-notes">Dark chocolate, chilli, sandalwood</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-02">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-02">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/terroni.jpg" width="720" height="900" loading="lazy"
+                   alt="Terroni bottle on moss beside a worn boot, with smoke and a hand holding bark"></div>
+              <div class="frag-cap"><span class="frag-name">Terroni</span></div>
+              <p class="micro frag-house">Orto Parisi</p>
+              <p class="frag-notes">Earth, woods, spice</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-03">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-03">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/insulo.jpg" width="720" height="900" loading="lazy"
+                   alt="Insulo bottle lying on an old world map beside another Jeroboam bottle"></div>
+              <div class="frag-cap"><span class="frag-name">Insulo</span></div>
+              <p class="micro frag-house">Jeroboam</p>
+              <p class="frag-notes">Vanilla, jasmine, musk</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-04">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-04">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/tabac-exquis.jpg" width="720" height="900" loading="lazy"
+                   alt="Tabac Exquis bottle, amber glass under a gold cap, on grey"></div>
+              <div class="frag-cap"><span class="frag-name">Tabac Exquis</span></div>
+              <p class="micro frag-house">Caron</p>
+              <p class="frag-notes">Tobacco, chocolate, incense</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-05">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-05">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/santal-austral.jpg" width="720" height="900" loading="lazy"
+                   alt="Santal Austral bottle against dark, polished wood"></div>
+              <div class="frag-cap"><span class="frag-name">Santal Austral</span></div>
+              <p class="micro frag-house">Mati&egrave;re Premi&egrave;re</p>
+              <p class="frag-notes">Sandalwood, almond milk, iris</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-06">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-06">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+            <li class="frag-card">
+              <div class="frag-frame"><img src="Media/fragrances/la-nuit-de-lhomme-le-parfum.jpg" width="720" height="900" loading="lazy"
+                   alt="La Nuit de L'Homme Le Parfum bottle in front of fire, with lime, star anise and lavender"></div>
+              <div class="frag-cap"><span class="frag-name">La Nuit de L&rsquo;Homme Le Parfum</span></div>
+              <p class="micro frag-house">Yves Saint Laurent</p>
+              <p class="frag-notes">Pepper, lavender, vanilla</p>
+              <button class="micro more-btn" type="button" aria-expanded="false" aria-controls="frag-review-07">My review<span class="more-plus" aria-hidden="true"></span></button>
+              <div class="more-panel" id="frag-review-07">
+                <div class="more-inner">
+                  <p>My review is coming soon.</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p class="media-caption frag-credits">Photos:
+            <a href="https://www.allyours.com/it/products/the-dark-side" target="_blank" rel="noopener">The Dark Side</a>, All Yours;
+            <a href="https://www.pinterest.com/pin/1033083602060376239/" target="_blank" rel="noopener">Boccanera</a>,
+            <a href="https://www.pinterest.com/pin/439804719886296598/" target="_blank" rel="noopener">Terroni</a> and
+            <a href="https://www.pinterest.com/pin/826340231623641446/" target="_blank" rel="noopener">Insulo</a>, found on Pinterest, photographers unknown;
+            <a href="https://www.parfumscaron.com/en/products/tabac-exquis" target="_blank" rel="noopener">Tabac Exquis</a>, Caron;
+            <a href="https://www.instagram.com/thenosenotes" target="_blank" rel="noopener">Santal Austral</a>, @thenosenotes;
+            <a href="https://allegro.pl/oferta/yves-saint-laurent-la-nuit-l-homme-le-parfum-60ml-11483529641" target="_blank" rel="noopener">La Nuit de L&rsquo;Homme</a>, Allegro.</p>
         </section>
       </div>
     </section>
@@ -2054,10 +2276,108 @@
   </div>
 </footer>
 
+<!-- Card view: filled from the clicked card (see "Card view" in the script) -->
+<div class="cardview" id="cardview" hidden>
+  <div class="cardview-backdrop" data-close></div>
+  <div class="cardview-dialog" role="dialog" aria-modal="true" aria-labelledby="cardview-title" tabindex="-1">
+    <button class="cardview-close micro" type="button" data-close>Close<span class="more-plus" aria-hidden="true"></span></button>
+    <div class="cardview-media"><img alt=""></div>
+    <div class="cardview-text">
+      <p class="micro cardview-kicker"></p>
+      <h3 class="cardview-title" id="cardview-title"></h3>
+      <p class="cardview-notes"></p>
+      <p class="micro cardview-label"></p>
+      <div class="cardview-body"></div>
+    </div>
+  </div>
+</div>
+
 <script>
   /* ======================== */
   /* TOGGLE LOGIC             */
   /* ======================== */
+
+  /* ======================== */
+  /* CARD VIEW                */
+  /* ======================== */
+  // Clicking a fragrance or character card (or its "My review" / "My thoughts" button) lifts the card's picture out of
+  // the grid and flies it to the middle of the screen, above the page (it is measured where it sits and where it will
+  // land, then slid between the two with a transform), and the text opens beside it. The close button, Esc or a click
+  // outside flies it back into its slot. The text shown is the one waiting in the card's .more-panel.
+  (function () {
+    var view = document.getElementById('cardview');
+    if (!view) return;
+    var dialog = view.querySelector('.cardview-dialog'), media = view.querySelector('.cardview-media'), img = media.querySelector('img');
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var card = null, timer = 0;
+    var frameOf = function (c) { return c.querySelector('.frag-frame, .fav-frame'); };
+    var text = function (c, sel) { var el = c.querySelector(sel); return el ? el.textContent.trim() : ''; };
+    // the transform that puts the card view's picture exactly over the card's picture
+    // (measured with the view's picture at rest, wherever it is drawn at the moment)
+    function overCard(c) {
+      var drawn = media.style.transform;
+      media.style.transition = 'none'; media.style.transform = 'none';
+      var from = frameOf(c).getBoundingClientRect(), to = media.getBoundingClientRect(), k = from.width / to.width;
+      media.style.transform = drawn;
+      return 'translate(' + (from.left - to.left).toFixed(1) + 'px,' + (from.top - to.top).toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+    }
+    function setPage(off) {      // everything but the card view: no clicks, no focus, not read out
+      [].forEach.call(document.body.children, function (el) { if (el !== view && el.tagName !== 'SCRIPT') el.inert = off; });
+      var bar = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.classList.toggle('cardview-lock', off);
+      document.body.style.paddingRight = off && bar > 0 ? bar + 'px' : '';
+    }
+    function open(c) {
+      clearTimeout(timer);
+      var pic = frameOf(c).querySelector('img'), btn = c.querySelector('.more-btn');
+      img.src = pic.currentSrc || pic.src; img.alt = pic.alt;
+      view.classList.toggle('cardview--dark', c.classList.contains('fav-card'));
+      view.querySelector('.cardview-kicker').textContent = text(c, '.frag-house, .fav-show');
+      view.querySelector('.cardview-title').textContent = text(c, '.frag-name, .fav-name');
+      view.querySelector('.cardview-notes').textContent = text(c, '.frag-notes');
+      view.querySelector('.cardview-label').textContent = btn ? btn.textContent.trim() : '';
+      var panel = c.querySelector('.more-inner');
+      view.querySelector('.cardview-body').innerHTML = panel ? panel.innerHTML : '';
+      view.querySelector('.cardview-text').scrollTop = 0; dialog.scrollTop = 0;
+      card = c;
+      setPage(true);
+      view.hidden = false;
+      view.classList.remove('is-open');
+      media.style.transition = 'none'; media.style.transform = '';
+      media.style.transform = still.matches ? '' : overCard(c);
+      c.classList.add('is-lifted');
+      void media.offsetWidth;                                   // start from the card...
+      media.style.transition = still.matches ? 'none' : 'transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1)';
+      media.style.transform = '';                               // ...and fly to the middle
+      view.classList.add('is-open');
+      view.querySelector('.cardview-close').focus({ preventScroll: true });
+    }
+    function close() {
+      if (!card) return;
+      var c = card; card = null;
+      view.classList.remove('is-open');
+      var now = getComputedStyle(media).transform;              // where the picture is right now (maybe mid-flight)
+      var home = still.matches ? '' : overCard(c);
+      media.style.transition = 'none'; media.style.transform = now === 'none' ? '' : now;
+      void media.offsetWidth;
+      media.style.transition = still.matches ? 'none' : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      media.style.transform = home;
+      timer = setTimeout(function () {                          // landed back in its slot
+        view.hidden = true;
+        media.style.transition = 'none'; media.style.transform = '';
+        c.classList.remove('is-lifted');
+        setPage(false);
+        var btn = c.querySelector('.more-btn');
+        if (btn) btn.focus({ preventScroll: true });
+      }, still.matches ? 0 : 520);
+    }
+    document.addEventListener('click', function (e) {
+      if (view.contains(e.target)) { if (e.target.closest('[data-close]')) close(); return; }
+      var c = e.target.closest('.frag-card, .fav-card');
+      if (c && !e.target.closest('a') && !card) open(c);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && card) close(); });
+  })();
 
   function pauseAllCardVideos() {
     document.querySelectorAll('.card-detail video').forEach(function(v) { v.pause(); });
